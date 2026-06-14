@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(
@@ -18,9 +19,17 @@ export default async function Home() {
           Fleet management for Turo hosts
         </p>
         <div className="flex flex-col gap-4 w-full max-w-md">
-          <h2 className="text-2xl font-semibold text-black dark:text-white">
-            My Vehicles
-          </h2>
+          <div className="flex items-center justify-between w-full">
+            <h2 className="text-2xl font-semibold text-black dark:text-white">
+              My Vehicles
+            </h2>
+            <Link
+              href="/vehicles/new"
+              className="rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-semibold px-4 py-2 hover:opacity-80 transition-opacity"
+            >
+              + Add Vehicle
+            </Link>
+          </div>
           {vehicles?.map((vehicle) => (
             <div
               key={vehicle.id}
