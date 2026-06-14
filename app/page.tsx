@@ -7,42 +7,27 @@ const supabase = createClient(
 )
 
 export default async function Home() {
-  const { data: vehicles } = await supabase.from('vehicles').select('*')
+  const { count } = await supabase.from('vehicles').select('*', { count: 'exact', head: true })
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-50 dark:bg-black">
-      <main className="flex flex-col items-center gap-8 text-center">
-        <h1 className="text-5xl font-bold text-black dark:text-white">
-          NorthFleet
-        </h1>
-        <p className="text-xl text-zinc-500">
-          Fleet management for Turo hosts
-        </p>
-        <div className="flex flex-col gap-4 w-full max-w-md">
-          <div className="flex items-center justify-between w-full">
-            <h2 className="text-2xl font-semibold text-black dark:text-white">
-              My Vehicles
-            </h2>
-            <Link
-              href="/vehicles/new"
-              className="rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-semibold px-4 py-2 hover:opacity-80 transition-opacity"
-            >
-              + Add Vehicle
-            </Link>
+    <div className="flex flex-col gap-8">
+      <div>
+        <h1 className="text-3xl font-bold text-black dark:text-white">Dashboard</h1>
+        <p className="text-zinc-500 mt-1">Welcome to NorthFleet</p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Link
+          href="/vehicles"
+          className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-6 py-5 flex items-center gap-4 hover:border-zinc-400 transition-colors"
+        >
+          <span className="text-3xl">🚗</span>
+          <div>
+            <p className="font-semibold text-black dark:text-white">My Fleet</p>
+            <p className="text-zinc-500 text-sm">{count ?? 0} vehicles</p>
           </div>
-          {vehicles?.map((vehicle) => (
-            <div
-              key={vehicle.id}
-              className="rounded-xl border border-zinc-200 bg-white p-4 text-left dark:border-zinc-800 dark:bg-zinc-900"
-            >
-              <p className="font-semibold text-black dark:text-white">
-                {vehicle.year} {vehicle.make} {vehicle.model}
-              </p>
-              <p className="text-zinc-500">{vehicle.color} · {vehicle.license_plate}</p>
-            </div>
-          ))}
-        </div>
-      </main>
+        </Link>
+      </div>
     </div>
   )
 }
