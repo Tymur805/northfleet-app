@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 const navItems = [
   { href: "/", label: "Dashboard", icon: "🏠" },
   { href: "/vehicles", label: "My Fleet", icon: "🚗" },
+  { href: "/trips", label: "Trips", icon: "📅" },
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
