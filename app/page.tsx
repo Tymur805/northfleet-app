@@ -7,12 +7,17 @@ const supabase = createClient(
 )
 
 export default async function Home() {
-  const { count: vehicleCount } = await supabase.from('vehicles').select('*', { count: 'exact', head: true })
-  const { count: tripCount } = await supabase.from('Trips').select('*', { count: 'exact', head: true })
+  const { data: vehicles } = await supabase.from('vehicles').select('*')
+  const { data: trips } = await supabase.from('Trips').select('*')
+
+  const today = new Date().toISOString().split('T')[0]
+  const activeTrips = trips?.filter((t) => t.start_date <= today && t.end_date >= today) ?? []
+  const totalEarnings = trips?.reduce((sum, t) => sum + Number(t.earnings), 0) ?? 0
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-2 gap-3 mt-2">
+      {/* Stats row */}
+      <div className="grid grid-cols-2 gap-3">
         <Link href="/vehicles" className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex flex-col gap-3 active:opacity-70 transition-opacity">
           <div className="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center">
             <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#3b82f6" strokeWidth={2}>
@@ -20,7 +25,7 @@ export default async function Home() {
             </svg>
           </div>
           <div>
-            <p className="text-2xl font-bold text-white">{vehicleCount ?? 0}</p>
+            <p className="text-2xl font-bold text-white">{vehicles?.length ?? 0}</p>
             <p className="text-xs text-zinc-500 mt-0.5">Vehicles</p>
           </div>
         </Link>
@@ -32,11 +37,34 @@ export default async function Home() {
             </svg>
           </div>
           <div>
-            <p className="text-2xl font-bold text-white">{tripCount ?? 0}</p>
-            <p className="text-xs text-zinc-500 mt-0.5">Trips</p>
+            <p className="text-2xl font-bold text-white">{activeTrips.length}</p>
+            <p className="text-xs text-zinc-500 mt-0.5">Active Trips</p>
           </div>
         </Link>
       </div>
+
+      {/* Total earnings */}
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
+        <p className="text-xs text-zinc-500 uppercase tracking-widest mb-1">Total Earnings</p>
+        <p className="text-3xl font-bold text-white">${totalEarnings.toLocaleString()}</p>
+        <p className="text-xs text-zinc-600 mt-1">All time · CAD</p>
+      </div>
+
+      {/* Active trips */}
+      {activeTrips.length > 0 && (
+        <div className="flex flex-col gap-3">
+          <p className="text-sm font-semibold text-zinc-400 uppercase tracking-widest">Active Now</p>
+          {activeTrips.map((trip) => (
+            <div key={trip.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between">
+              <div>
+                <p className="font-semibold text-white">{trip.customer_name}</p>
+                <p className="text-sm text-zinc-500">Returns {trip.end_date}</p>
+              </div>
+              <p className="text-green-400 font-semibold">${Number(trip.earnings).toLocaleString()}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

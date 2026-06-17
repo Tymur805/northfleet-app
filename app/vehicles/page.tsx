@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import Link from 'next/link'
+import VehicleSearch from '../components/VehicleSearch'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -8,6 +9,17 @@ const supabase = createClient(
 
 export default async function VehiclesPage() {
   const { data: vehicles } = await supabase.from('vehicles').select('*').order('year', { ascending: false })
+  const { data: trips } = await supabase.from('Trips').select('vehicle_id, earnings')
+
+  const earningsByVehicle: Record<number, number> = {}
+  trips?.forEach((trip) => {
+    earningsByVehicle[trip.vehicle_id] = (earningsByVehicle[trip.vehicle_id] ?? 0) + Number(trip.earnings)
+  })
+
+  const vehiclesWithEarnings = vehicles?.map((v) => ({
+    ...v,
+    totalEarned: earningsByVehicle[v.id] ?? 0,
+  })) ?? []
 
   return (
     <div className="flex flex-col gap-5">
@@ -21,34 +33,7 @@ export default async function VehiclesPage() {
         </Link>
       </div>
 
-      <div className="flex flex-col gap-3">
-        {vehicles?.map((vehicle) => (
-          <div
-            key={vehicle.id}
-            className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-zinc-800 flex items-center justify-center text-2xl">
-                🚗
-              </div>
-              <div>
-                <p className="font-semibold text-white">
-                  {vehicle.year} {vehicle.make} {vehicle.model}
-                </p>
-                <p className="text-sm text-zinc-500 mt-0.5">
-                  {vehicle.color} · {vehicle.license_plate}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
-
-        {vehicles?.length === 0 && (
-          <div className="text-center py-16 text-zinc-600">
-            No vehicles yet. Tap + to add one.
-          </div>
-        )}
-      </div>
+      <VehicleSearch vehicles={vehiclesWithEarnings} />
     </div>
   )
 }
