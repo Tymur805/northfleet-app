@@ -7,24 +7,33 @@ const supabase = createClient(
 )
 
 export default async function Home() {
-  const { count } = await supabase.from('vehicles').select('*', { count: 'exact', head: true })
+  const { count: vehicleCount } = await supabase.from('vehicles').select('*', { count: 'exact', head: true })
+  const { count: tripCount } = await supabase.from('Trips').select('*', { count: 'exact', head: true })
 
   return (
-    <div className="flex flex-col gap-8">
-      <div>
-        <h1 className="text-3xl font-bold text-black dark:text-white">Dashboard</h1>
-        <p className="text-zinc-500 mt-1">Welcome to NorthFleet</p>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Link
-          href="/vehicles"
-          className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-6 py-5 flex items-center gap-4 hover:border-zinc-400 transition-colors"
-        >
-          <span className="text-3xl">🚗</span>
+    <div className="flex flex-col gap-6">
+      <div className="grid grid-cols-2 gap-3 mt-2">
+        <Link href="/vehicles" className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex flex-col gap-3 active:opacity-70 transition-opacity">
+          <div className="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center">
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#3b82f6" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 17h8M4 17l1.5-6h13L20 17M7 11l1-4h8l1 4" />
+            </svg>
+          </div>
           <div>
-            <p className="font-semibold text-black dark:text-white">My Fleet</p>
-            <p className="text-zinc-500 text-sm">{count ?? 0} vehicles</p>
+            <p className="text-2xl font-bold text-white">{vehicleCount ?? 0}</p>
+            <p className="text-xs text-zinc-500 mt-0.5">Vehicles</p>
+          </div>
+        </Link>
+
+        <Link href="/trips" className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex flex-col gap-3 active:opacity-70 transition-opacity">
+          <div className="w-9 h-9 rounded-xl bg-green-500/10 flex items-center justify-center">
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#22c55e" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+            </svg>
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-white">{tripCount ?? 0}</p>
+            <p className="text-xs text-zinc-500 mt-0.5">Trips</p>
           </div>
         </Link>
       </div>

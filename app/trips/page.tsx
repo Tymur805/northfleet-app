@@ -15,43 +15,41 @@ export default async function TripsPage() {
   if (error) console.error(error)
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-black dark:text-white">Trips</h1>
-          <p className="text-zinc-500 mt-1">{trips?.length ?? 0} bookings</p>
-        </div>
+        <h1 className="text-2xl font-bold text-white">Trips</h1>
         <Link
           href="/trips/new"
-          className="rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-semibold px-5 py-2.5 hover:opacity-80 transition-opacity"
+          className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-black font-bold text-lg hover:opacity-80 transition-opacity"
         >
-          + Add Trip
+          +
         </Link>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
         {trips?.map((trip) => (
           <div
             key={trip.id}
-            className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 flex items-center justify-between"
+            className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between"
           >
-            <div className="flex flex-col gap-1">
-              <p className="font-semibold text-black dark:text-white">
-                Trip #{trip.id}
-              </p>
-              <p className="text-zinc-500 text-sm">
-                {trip.customer_name} · {trip.start_date} → {trip.end_date}
+            <div>
+              <p className="font-semibold text-white">{trip.customer_name}</p>
+              <p className="text-sm text-zinc-500 mt-0.5">
+                {trip.start_date} → {trip.end_date}
               </p>
             </div>
-            <p className="text-lg font-semibold text-black dark:text-white">
-              ${trip.earnings}
-            </p>
+            <div className="flex flex-col items-end gap-1">
+              <p className="font-semibold text-white">${trip.earnings}</p>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 uppercase tracking-wide">
+                Active
+              </span>
+            </div>
           </div>
         ))}
 
         {trips?.length === 0 && (
-          <div className="text-center py-16 text-zinc-400">
-            No trips yet. Add your first one!
+          <div className="text-center py-16 text-zinc-600">
+            No trips yet. Tap + to add one.
           </div>
         )}
       </div>
