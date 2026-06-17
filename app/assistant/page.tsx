@@ -11,8 +11,37 @@ export default function AssistantPage() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [replyTo, setReplyTo] = useState<Message | null>(null)
+  const [listening, setListening] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const recognitionRef = useRef<any>(null)
+
+  function startListening() {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    if (!SpeechRecognition) {
+      alert('Voice recognition is not supported in this browser. Try Chrome.')
+      return
+    }
+    const recognition = new SpeechRecognition()
+    recognition.continuous = false
+    recognition.interimResults = false
+    recognition.lang = '' // auto-detect language
+    recognition.onstart = () => setListening(true)
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript
+      setInput(transcript)
+      setListening(false)
+    }
+    recognition.onerror = () => setListening(false)
+    recognition.onend = () => setListening(false)
+    recognitionRef.current = recognition
+    recognition.start()
+  }
+
+  function stopListening() {
+    recognitionRef.current?.stop()
+    setListening(false)
+  }
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -112,12 +141,22 @@ export default function AssistantPage() {
 
       {/* Input */}
       <div className="flex gap-2 pt-2">
+        <button
+          onClick={listening ? stopListening : startListening}
+          className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
+            listening ? 'bg-red-500 animate-pulse' : 'bg-zinc-800 hover:bg-zinc-700'
+          }`}
+        >
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+          </svg>
+        </button>
         <input
           ref={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-          placeholder="Ask about your fleet..."
+          placeholder={listening ? 'Listening...' : 'Ask about your fleet...'}
           className="flex-1 bg-zinc-800 border border-zinc-700 rounded-full px-4 py-3 text-white text-sm outline-none focus:border-zinc-500 placeholder:text-zinc-500"
         />
         <button
