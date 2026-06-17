@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import ReactMarkdown from 'react-markdown'
 
 type Message = { role: 'user' | 'assistant'; text: string }
 
@@ -11,17 +10,27 @@ export default function AssistantPage() {
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
+  const [replyTo, setReplyTo] = useState<Message | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
+  function handleReply(msg: Message) {
+    setReplyTo(msg)
+    inputRef.current?.focus()
+  }
+
   async function sendMessage() {
     if (!input.trim() || loading) return
-    const userMessage = input.trim()
+    const userMessage = replyTo
+      ? `Replying to: "${replyTo.text.slice(0, 80)}${replyTo.text.length > 80 ? '...' : ''}"\n\n${input.trim()}`
+      : input.trim()
     setInput('')
-    setMessages((prev) => [...prev, { role: 'user', text: userMessage }])
+    setReplyTo(null)
+    setMessages((prev) => [...prev, { role: 'user', text: input.trim() }])
     setLoading(true)
 
     const res = await fetch('/api/assistant', {
@@ -48,12 +57,36 @@ export default function AssistantPage() {
       <div className="flex-1 overflow-y-auto flex flex-col gap-3 pb-4">
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-              msg.role === 'user'
-                ? 'bg-white text-black rounded-br-sm'
-                : 'bg-zinc-800 text-zinc-100 rounded-bl-sm'
-            }`}>
-              {msg.text}
+            <div className="flex items-center gap-1.5 group">
+              {msg.role === 'assistant' && (
+                <button
+                  onClick={() => handleReply(msg)}
+                  className="opacity-0 group-hover:opacity-100 transition-opacity text-zinc-500 hover:text-zinc-300"
+                >
+                  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                  </svg>
+                </button>
+              )}
+              <div
+                className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                  msg.role === 'user'
+                    ? 'bg-white text-black rounded-br-sm'
+                    : 'bg-zinc-800 text-zinc-100 rounded-bl-sm'
+                }`}
+              >
+                {msg.text}
+              </div>
+              {msg.role === 'user' && (
+                <button
+                  onClick={() => handleReply(msg)}
+                  className="opacity-0 group-hover:opacity-100 transition-opacity text-zinc-500 hover:text-zinc-300"
+                >
+                  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                  </svg>
+                </button>
+              )}
             </div>
           </div>
         ))}
@@ -67,9 +100,20 @@ export default function AssistantPage() {
         <div ref={bottomRef} />
       </div>
 
+      {/* Reply preview */}
+      {replyTo && (
+        <div className="flex items-center justify-between bg-zinc-800 border-l-2 border-white rounded-lg px-3 py-2 mb-2">
+          <p className="text-xs text-zinc-400 truncate">
+            Replying to: {replyTo.text.slice(0, 60)}{replyTo.text.length > 60 ? '...' : ''}
+          </p>
+          <button onClick={() => setReplyTo(null)} className="text-zinc-500 hover:text-white ml-2 text-sm">✕</button>
+        </div>
+      )}
+
       {/* Input */}
       <div className="flex gap-2 pt-2">
         <input
+          ref={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}

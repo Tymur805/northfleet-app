@@ -15,6 +15,11 @@ export async function POST(request: Request) {
   // Fetch all data from the database
   const { data: vehicles } = await supabase.from('vehicles').select('*')
   const { data: trips } = await supabase.from('Trips').select('*')
+  const maintenanceRes = await fetch(
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/Maintenance?select=*&order=date.desc`,
+    { headers: { 'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, 'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}` } }
+  )
+  const maintenance = await maintenanceRes.json()
 
   const context = `
 You are NorthFleet AI, a helpful assistant for a Turo fleet manager in Canada.
@@ -26,11 +31,17 @@ ${JSON.stringify(vehicles, null, 2)}
 TRIPS:
 ${JSON.stringify(trips, null, 2)}
 
+MAINTENANCE RECORDS:
+${JSON.stringify(maintenance, null, 2)}
+
 Today's date is ${new Date().toISOString().split('T')[0]}.
 
-Answer the user's question using this data. Be concise and helpful.
-Do not use markdown formatting — no asterisks, no bullet points with *, no headers with #. Just plain conversational text.
-If you don't have enough data to answer, say so honestly.
+Rules:
+- Answer in the same language the user writes in (Ukrainian, French, English, etc.)
+- Do not use markdown formatting — no asterisks, no bullet points with *, no headers with #. Just plain conversational text.
+- If the user asks you to write a message to a customer, always write it in perfect professional English regardless of what language the user speaks. Label it clearly as "Message to customer:" followed by the message.
+- If you don't have enough data to answer, say so honestly.
+- Distance is in kilometers, currency is CAD.
 `
 
   try {
