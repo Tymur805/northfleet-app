@@ -1,43 +1,32 @@
-import Link from 'next/link'
+'use client'
+
+import { useEffect, useState } from 'react'
 import FinanceTabs from '../components/FinanceTabs'
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+export default function FinancePage() {
+  const [trips, setTrips] = useState<any[]>([])
+  const [expenses, setExpenses] = useState<any[]>([])
+  const [vehicles, setVehicles] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
 
-const headers = {
-  'apikey': SUPABASE_KEY,
-  'Authorization': `Bearer ${SUPABASE_KEY}`,
-}
+  useEffect(() => {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    const h = { 'apikey': key, 'Authorization': `Bearer ${key}` }
 
-export const dynamic = 'force-dynamic'
-
-export default async function FinancePage() {
-  let trips: any[] = []
-  let expenses: any[] = []
-  let vehicles: any[] = []
-
-  try {
-    const [tripsRes, expensesRes, vehiclesRes] = await Promise.all([
-      fetch(`${SUPABASE_URL}/rest/v1/Trips?select=*&order=start_date.desc`, { headers, cache: 'no-store', signal: AbortSignal.timeout(8000) }),
-      fetch(`${SUPABASE_URL}/rest/v1/Expenses?select=*&order=date.desc`, { headers, cache: 'no-store', signal: AbortSignal.timeout(8000) }),
-      fetch(`${SUPABASE_URL}/rest/v1/vehicles?select=*`, { headers, cache: 'no-store', signal: AbortSignal.timeout(8000) }),
-    ])
-
-    const [tripsData, expensesData, vehiclesData] = await Promise.all([
-      tripsRes.json(),
-      expensesRes.json(),
-      vehiclesRes.json(),
-    ])
-
-    trips = Array.isArray(tripsData) ? tripsData : []
-    expenses = Array.isArray(expensesData) ? expensesData : []
-    vehicles = Array.isArray(vehiclesData) ? vehiclesData : []
-  } catch {
-    // show empty state instead of crashing
-  }
+    Promise.all([
+      fetch(`${url}/rest/v1/Trips?select=*&order=start_date.desc`, { headers: h }).then(r => r.json()),
+      fetch(`${url}/rest/v1/Expenses?select=*&order=date.desc`, { headers: h }).then(r => r.json()),
+      fetch(`${url}/rest/v1/vehicles?select=*`, { headers: h }).then(r => r.json()),
+    ]).then(([tripsData, expensesData, vehiclesData]) => {
+      setTrips(Array.isArray(tripsData) ? tripsData : [])
+      setExpenses(Array.isArray(expensesData) ? expensesData : [])
+      setVehicles(Array.isArray(vehiclesData) ? vehiclesData : [])
+    }).catch(() => {}).finally(() => setLoading(false))
+  }, [])
 
   const totalIncome = trips.reduce((sum, t) => sum + Number(t.earnings), 0)
-  const totalExpenses = expenses.reduce((sum: number, e: any) => sum + Number(e.amount), 0)
+  const totalExpenses = expenses.reduce((sum, e) => sum + Number(e.amount), 0)
   const cashFlow = totalIncome - totalExpenses
 
   return (
@@ -61,7 +50,11 @@ export default async function FinancePage() {
         </div>
       </div>
 
-      <FinanceTabs trips={trips} expenses={expenses} vehicles={vehicles} />
+      {loading ? (
+        <div className="text-center py-16 text-zinc-600">Loading...</div>
+      ) : (
+        <FinanceTabs trips={trips} expenses={expenses} vehicles={vehicles} />
+      )}
     </div>
   )
 }
