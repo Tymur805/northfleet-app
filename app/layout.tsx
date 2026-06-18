@@ -40,12 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
 
-          {/* Bottom bar */}
-          <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg z-40 overflow-visible" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-            <div className="bg-[#0f1117] border-t border-zinc-800 overflow-visible pt-3">
-              <FloatingActions />
-            </div>
-          </div>
+          <FloatingActions />
         </div>
       </body>
     </html>
