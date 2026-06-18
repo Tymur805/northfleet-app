@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 
 type Vehicle = {
   id: number
@@ -41,9 +42,10 @@ export default function VehicleSearch({ vehicles }: { vehicles: Vehicle[] }) {
       </div>
 
       {filtered.map((vehicle) => (
-        <div
+        <Link
           key={vehicle.id}
-          className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between"
+          href={`/vehicles/${vehicle.id}`}
+          className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between active:opacity-70 transition-opacity"
         >
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-xl bg-zinc-800 flex items-center justify-center text-3xl">
@@ -63,7 +65,7 @@ export default function VehicleSearch({ vehicles }: { vehicles: Vehicle[] }) {
             <p className="text-sm font-semibold text-green-400">${vehicle.totalEarned.toLocaleString()}</p>
             <p className="text-[10px] text-zinc-600 mt-0.5">Total earned</p>
           </div>
-        </div>
+        </Link>
       ))}
 
       {filtered.length === 0 && (
