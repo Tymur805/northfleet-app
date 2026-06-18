@@ -40,7 +40,7 @@ export default function BottomNav() {
   const pathname = usePathname()
 
   return (
-    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg bg-[#0f1117] border-t border-zinc-800 flex items-center justify-around px-2 py-3 z-50">
+    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg bg-[#0f1117] border-t border-zinc-800 flex items-center justify-around px-2 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] z-50">
       {navItems.map((item) => {
         const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
         return (
