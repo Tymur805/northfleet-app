@@ -7,6 +7,8 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
 
+export const dynamic = 'force-dynamic'
+
 export default async function VehiclesPage() {
   const { data: vehicles } = await supabase.from('vehicles').select('*').order('year', { ascending: false })
   const { data: trips } = await supabase.from('Trips').select('vehicle_id, earnings')

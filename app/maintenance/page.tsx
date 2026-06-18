@@ -9,6 +9,8 @@ const typeIcons: Record<string, string> = {
   'Other': '⚙️',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function MaintenancePage() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/Maintenance?select=*&order=date.desc`,
