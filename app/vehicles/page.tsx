@@ -5,7 +5,7 @@ import Link from 'next/link'
 import VehicleSearch from '../components/VehicleSearch'
 
 export default function VehiclesPage() {
-  const [vehiclesWithEarnings, setVehiclesWithEarnings] = useState<any[]>([])
+  const [vehiclesWithStats, setVehiclesWithStats] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -15,15 +15,35 @@ export default function VehiclesPage() {
 
     Promise.all([
       fetch(`${url}/rest/v1/vehicles?select=*&order=year.desc`, { headers: h }).then(r => r.json()),
-      fetch(`${url}/rest/v1/Trips?select=vehicle_id,earnings`, { headers: h }).then(r => r.json()),
+      fetch(`${url}/rest/v1/Trips?select=vehicle_id,earnings,start_date,end_date`, { headers: h }).then(r => r.json()),
     ]).then(([vehiclesData, tripsData]) => {
       const vehicles = Array.isArray(vehiclesData) ? vehiclesData : []
       const trips = Array.isArray(tripsData) ? tripsData : []
-      const earningsByVehicle: Record<number, number> = {}
-      trips.forEach((t: any) => {
-        earningsByVehicle[t.vehicle_id] = (earningsByVehicle[t.vehicle_id] ?? 0) + Number(t.earnings)
+
+      const today = new Date().toISOString().split('T')[0]
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000).toISOString().split('T')[0]
+
+      const result = vehicles.map((v: any) => {
+        const vTrips = trips.filter((t: any) => t.vehicle_id === v.id)
+        const totalEarned = vTrips.reduce((s: number, t: any) => s + Number(t.earnings), 0)
+
+        // Count rented days in last 30 days
+        let rentedDays = 0
+        for (const t of vTrips) {
+          const start = t.start_date > thirtyDaysAgo ? t.start_date : thirtyDaysAgo
+          const end = t.end_date < today ? t.end_date : today
+          if (start <= end) {
+            const diff = Math.round((new Date(end).getTime() - new Date(start).getTime()) / 86400000)
+            rentedDays += diff + 1
+          }
+        }
+        const utilization30 = Math.min(100, Math.round((rentedDays / 30) * 100))
+        const activeNow = vTrips.some((t: any) => t.start_date <= today && t.end_date >= today)
+
+        return { ...v, totalEarned, utilization30, activeNow }
       })
-      setVehiclesWithEarnings(vehicles.map((v: any) => ({ ...v, totalEarned: earningsByVehicle[v.id] ?? 0 })))
+
+      setVehiclesWithStats(result)
     }).catch(() => {}).finally(() => setLoading(false))
   }, [])
 
@@ -36,7 +56,7 @@ export default function VehiclesPage() {
       {loading ? (
         <div className="text-center py-16 text-zinc-600">Loading...</div>
       ) : (
-        <VehicleSearch vehicles={vehiclesWithEarnings} />
+        <VehicleSearch vehicles={vehiclesWithStats} />
       )}
     </div>
   )
