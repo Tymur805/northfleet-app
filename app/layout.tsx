@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import BottomNav from "./components/BottomNav";
+import FloatingActions from "./components/FloatingActions";
 
 const geist = Geist({ subsets: ["latin"] });
 
@@ -36,10 +37,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </header>
 
           {/* Page content */}
-          <main className="flex-1 px-5 pb-28 overflow-y-auto">
+          <main className="flex-1 px-5 pb-36 overflow-y-auto">
             {children}
           </main>
 
+          <FloatingActions />
           <BottomNav />
         </div>
       </body>
