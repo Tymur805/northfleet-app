@@ -9,6 +9,7 @@ const supabase = createClient(
 
 export default async function FinancePage() {
   const { data: trips } = await supabase.from('Trips').select('*').order('start_date', { ascending: false })
+  const { data: vehicles } = await supabase.from('vehicles').select('*')
 
   const expensesRes = await fetch(
     `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/Expenses?select=*&order=date.desc`,
@@ -49,7 +50,7 @@ export default async function FinancePage() {
         </div>
       </div>
 
-      <FinanceTabs trips={trips ?? []} expenses={expenses} />
+      <FinanceTabs trips={trips ?? []} expenses={expenses} vehicles={vehicles ?? []} />
     </div>
   )
 }

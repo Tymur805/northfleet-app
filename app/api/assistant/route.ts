@@ -21,6 +21,13 @@ export async function POST(request: Request) {
   )
   const maintenance = await maintenanceRes.json()
 
+  const expensesRes = await fetch(
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/expenses?select=*&order=date.desc`,
+    { headers: { 'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, 'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}` } }
+  )
+  const expensesData = await expensesRes.json()
+  const expenses = Array.isArray(expensesData) ? expensesData : []
+
   const context = `
 You are NorthFleet AI, a helpful assistant for a Turo fleet manager in Canada.
 You have access to the following real data from the fleet management system:
@@ -33,6 +40,9 @@ ${JSON.stringify(trips, null, 2)}
 
 MAINTENANCE RECORDS:
 ${JSON.stringify(maintenance, null, 2)}
+
+EXPENSES:
+${JSON.stringify(expenses, null, 2)}
 
 Today's date is ${new Date().toISOString().split('T')[0]}.
 
