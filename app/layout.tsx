@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
-import BottomNav from "./components/BottomNav";
 import FloatingActions from "./components/FloatingActions";
 
 const geist = Geist({ subsets: ["latin"] });
@@ -37,12 +36,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </header>
 
           {/* Page content */}
-          <main className="flex-1 px-5 pb-36 overflow-y-auto">
+          <main className="flex-1 px-5 pb-32 overflow-y-auto">
             {children}
           </main>
 
-          <FloatingActions />
-          <BottomNav />
+          {/* Bottom bar with nav tabs */}
+          <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg bg-[#0f1117] border-t border-zinc-800 z-40" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+            <FloatingActions />
+          </div>
         </div>
       </body>
     </html>
