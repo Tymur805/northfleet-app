@@ -6,16 +6,22 @@ import TripsTabs from '../components/TripsTabs'
 
 export default function TripsPage() {
   const [trips, setTrips] = useState<any[]>([])
+  const [vehicles, setVehicles] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    fetch(`${url}/rest/v1/Trips?select=*&order=start_date.desc`, {
-      headers: { 'apikey': key, 'Authorization': `Bearer ${key}` }
-    })
-      .then(r => r.json())
-      .then(data => setTrips(Array.isArray(data) ? data : []))
+    const h = { 'apikey': key, 'Authorization': `Bearer ${key}` }
+
+    Promise.all([
+      fetch(`${url}/rest/v1/Trips?select=*&order=start_date.desc`, { headers: h }).then(r => r.json()),
+      fetch(`${url}/rest/v1/vehicles?select=*`, { headers: h }).then(r => r.json()),
+    ])
+      .then(([tripsData, vehiclesData]) => {
+        setTrips(Array.isArray(tripsData) ? tripsData : [])
+        setVehicles(Array.isArray(vehiclesData) ? vehiclesData : [])
+      })
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
@@ -29,7 +35,7 @@ export default function TripsPage() {
       {loading ? (
         <div className="text-center py-16 text-zinc-600">Loading...</div>
       ) : (
-        <TripsTabs trips={trips} />
+        <TripsTabs trips={trips} vehicles={vehicles} />
       )}
     </div>
   )

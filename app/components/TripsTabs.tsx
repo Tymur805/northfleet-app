@@ -5,24 +5,33 @@ import { useState } from 'react'
 type Trip = {
   id: number
   customer_name: string
+  vehicle_id: number
   start_date: string
   end_date: string
   earnings: number
 }
 
-export default function TripsTabs({ trips }: { trips: Trip[] }) {
+type Vehicle = {
+  id: number
+  nickname?: string
+  make: string
+  model: string
+  year: number
+}
+
+export default function TripsTabs({ trips, vehicles = [] }: { trips: Trip[], vehicles?: Vehicle[] }) {
   const [tab, setTab] = useState<'booked' | 'history'>('booked')
 
   const today = new Date().toISOString().split('T')[0]
 
   const booked = trips.filter((t) => t.end_date >= today)
   const history = trips.filter((t) => t.end_date < today)
-
   const displayed = tab === 'booked' ? booked : history
+
+  const vehicleMap = Object.fromEntries(vehicles.map(v => [v.id, v]))
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Tabs */}
       <div className="flex gap-1 bg-zinc-800 rounded-xl p-1">
         {(['booked', 'history'] as const).map((t) => (
           <button
@@ -37,13 +46,14 @@ export default function TripsTabs({ trips }: { trips: Trip[] }) {
         ))}
       </div>
 
-      {/* Trip list */}
       <div className="flex flex-col gap-3">
         {displayed.map((trip) => {
           const active = trip.start_date <= today && trip.end_date >= today
           const start = new Date(trip.start_date)
           const end = new Date(trip.end_date)
-          const days = Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
+          const days = Math.max(1, Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)))
+          const v = vehicleMap[trip.vehicle_id]
+          const vehicleLabel = v ? (v.nickname || `${v.year} ${v.make} ${v.model}`) : `Vehicle #${trip.vehicle_id}`
 
           return (
             <div
@@ -52,8 +62,9 @@ export default function TripsTabs({ trips }: { trips: Trip[] }) {
             >
               <div>
                 <p className="font-semibold text-white">{trip.customer_name}</p>
-                <p className="text-sm text-zinc-500 mt-0.5">
-                  {trip.start_date} → {trip.end_date} · {days} days
+                <p className="text-sm text-blue-400 mt-0.5">{vehicleLabel}</p>
+                <p className="text-xs text-zinc-500 mt-0.5">
+                  {trip.start_date} → {trip.end_date} · {days} day{days !== 1 ? 's' : ''}
                 </p>
               </div>
               <div className="flex flex-col items-end gap-1.5">
@@ -65,7 +76,7 @@ export default function TripsTabs({ trips }: { trips: Trip[] }) {
                     ? 'bg-blue-500/10 text-blue-400'
                     : 'bg-zinc-700 text-zinc-400'
                 }`}>
-                  {active ? 'Active' : tab === 'booked' ? 'Upcoming' : 'Completed'}
+                  {active ? 'Active' : tab === 'booked' ? 'Upcoming' : 'Done'}
                 </span>
               </div>
             </div>
