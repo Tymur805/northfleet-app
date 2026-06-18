@@ -1,27 +1,40 @@
-import { createClient } from '@supabase/supabase-js'
 import Link from 'next/link'
 import VehicleSearch from '../components/VehicleSearch'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const headers = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': `Bearer ${SUPABASE_KEY}`,
+}
 
 export const dynamic = 'force-dynamic'
 
 export default async function VehiclesPage() {
-  const { data: vehicles } = await supabase.from('vehicles').select('*').order('year', { ascending: false })
-  const { data: trips } = await supabase.from('Trips').select('vehicle_id, earnings')
+  let vehicles: any[] = []
+  let trips: any[] = []
+
+  try {
+    const [vehiclesRes, tripsRes] = await Promise.all([
+      fetch(`${SUPABASE_URL}/rest/v1/vehicles?select=*&order=year.desc`, { headers, cache: 'no-store', signal: AbortSignal.timeout(8000) }),
+      fetch(`${SUPABASE_URL}/rest/v1/Trips?select=vehicle_id,earnings`, { headers, cache: 'no-store', signal: AbortSignal.timeout(8000) }),
+    ])
+    const [vehiclesData, tripsData] = await Promise.all([vehiclesRes.json(), tripsRes.json()])
+    vehicles = Array.isArray(vehiclesData) ? vehiclesData : []
+    trips = Array.isArray(tripsData) ? tripsData : []
+  } catch {
+    // show empty state
+  }
 
   const earningsByVehicle: Record<number, number> = {}
-  trips?.forEach((trip) => {
+  trips.forEach((trip) => {
     earningsByVehicle[trip.vehicle_id] = (earningsByVehicle[trip.vehicle_id] ?? 0) + Number(trip.earnings)
   })
 
-  const vehiclesWithEarnings = vehicles?.map((v) => ({
+  const vehiclesWithEarnings = vehicles.map((v) => ({
     ...v,
     totalEarned: earningsByVehicle[v.id] ?? 0,
-  })) ?? []
+  }))
 
   return (
     <div className="flex flex-col gap-5">

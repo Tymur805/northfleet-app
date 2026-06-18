@@ -1,19 +1,28 @@
-import { createClient } from '@supabase/supabase-js'
 import Link from 'next/link'
 import TripsTabs from '../components/TripsTabs'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const headers = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': `Bearer ${SUPABASE_KEY}`,
+}
 
 export const dynamic = 'force-dynamic'
 
 export default async function TripsPage() {
-  const { data: trips } = await supabase
-    .from('Trips')
-    .select('*')
-    .order('start_date', { ascending: false })
+  let trips: any[] = []
+
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/Trips?select=*&order=start_date.desc`,
+      { headers, cache: 'no-store', signal: AbortSignal.timeout(8000) }
+    )
+    const data = await res.json()
+    trips = Array.isArray(data) ? data : []
+  } catch {
+    // show empty state
+  }
 
   return (
     <div className="flex flex-col gap-5">
@@ -27,7 +36,7 @@ export default async function TripsPage() {
         </Link>
       </div>
 
-      <TripsTabs trips={trips ?? []} />
+      <TripsTabs trips={trips} />
     </div>
   )
 }

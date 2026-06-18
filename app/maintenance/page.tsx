@@ -12,18 +12,25 @@ const typeIcons: Record<string, string> = {
 export const dynamic = 'force-dynamic'
 
 export default async function MaintenancePage() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/Maintenance?select=*&order=date.desc`,
-    {
-      headers: {
-        'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
-      },
-      cache: 'no-store',
-    }
-  )
-  const data = await res.json()
-  const records = Array.isArray(data) ? data : []
+  let records: any[] = []
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/Maintenance?select=*&order=date.desc`,
+      {
+        headers: {
+          'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
+        },
+        cache: 'no-store',
+        signal: AbortSignal.timeout(8000),
+      }
+    )
+    const data = await res.json()
+    records = Array.isArray(data) ? data : []
+  } catch {
+    records = []
+  }
 
   return (
     <div className="flex flex-col gap-5">
@@ -38,7 +45,7 @@ export default async function MaintenancePage() {
       </div>
 
       <div className="flex flex-col gap-3">
-        {records?.map((record) => (
+        {records.map((record) => (
           <div
             key={record.id}
             className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between"
@@ -61,7 +68,7 @@ export default async function MaintenancePage() {
           </div>
         ))}
 
-        {records?.length === 0 && (
+        {records.length === 0 && (
           <div className="text-center py-16 text-zinc-600">
             No maintenance records yet. Tap + to add one.
           </div>

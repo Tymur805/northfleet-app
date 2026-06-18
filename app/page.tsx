@@ -1,24 +1,36 @@
 import Link from 'next/link'
-import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const headers = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': `Bearer ${SUPABASE_KEY}`,
+}
 
 export const dynamic = 'force-dynamic'
 
 export default async function Home() {
-  const { data: vehicles } = await supabase.from('vehicles').select('*')
-  const { data: trips } = await supabase.from('Trips').select('*')
+  let vehicles: any[] = []
+  let trips: any[] = []
+
+  try {
+    const [vehiclesRes, tripsRes] = await Promise.all([
+      fetch(`${SUPABASE_URL}/rest/v1/vehicles?select=*`, { headers, cache: 'no-store', signal: AbortSignal.timeout(8000) }),
+      fetch(`${SUPABASE_URL}/rest/v1/Trips?select=*`, { headers, cache: 'no-store', signal: AbortSignal.timeout(8000) }),
+    ])
+    const [vehiclesData, tripsData] = await Promise.all([vehiclesRes.json(), tripsRes.json()])
+    vehicles = Array.isArray(vehiclesData) ? vehiclesData : []
+    trips = Array.isArray(tripsData) ? tripsData : []
+  } catch {
+    // show empty state
+  }
 
   const today = new Date().toISOString().split('T')[0]
-  const activeTrips = trips?.filter((t) => t.start_date <= today && t.end_date >= today) ?? []
-  const totalEarnings = trips?.reduce((sum, t) => sum + Number(t.earnings), 0) ?? 0
+  const activeTrips = trips.filter((t) => t.start_date <= today && t.end_date >= today)
+  const totalEarnings = trips.reduce((sum, t) => sum + Number(t.earnings), 0)
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Stats row */}
       <div className="grid grid-cols-2 gap-3">
         <Link href="/vehicles" className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex flex-col gap-3 active:opacity-70 transition-opacity">
           <div className="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center">
@@ -27,7 +39,7 @@ export default async function Home() {
             </svg>
           </div>
           <div>
-            <p className="text-2xl font-bold text-white">{vehicles?.length ?? 0}</p>
+            <p className="text-2xl font-bold text-white">{vehicles.length}</p>
             <p className="text-xs text-zinc-500 mt-0.5">Vehicles</p>
           </div>
         </Link>
@@ -45,14 +57,12 @@ export default async function Home() {
         </Link>
       </div>
 
-      {/* Total earnings */}
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
         <p className="text-xs text-zinc-500 uppercase tracking-widest mb-1">Total Earnings</p>
         <p className="text-3xl font-bold text-white">${totalEarnings.toLocaleString()}</p>
         <p className="text-xs text-zinc-600 mt-1">All time · CAD</p>
       </div>
 
-      {/* Active trips */}
       {activeTrips.length > 0 && (
         <div className="flex flex-col gap-3">
           <p className="text-sm font-semibold text-zinc-400 uppercase tracking-widest">Active Now</p>
