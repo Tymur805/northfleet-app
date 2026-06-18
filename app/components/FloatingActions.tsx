@@ -133,20 +133,20 @@ export default function FloatingActions() {
       )}
 
       {/* Bottom bar: [+] [nav tabs] [🎤] */}
-      <div className="flex items-center justify-between px-4 pt-2 pb-2">
-        {/* Plus button */}
+      <div className="flex items-end justify-between px-5 pb-3">
+        {/* Plus button — pops above the bar */}
         <button
           data-plus
           onClick={() => { setPlusOpen(p => !p); setOverlay(null) }}
-          className="w-14 h-14 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white shadow-lg active:scale-95 transition-transform -mt-5"
+          className="w-16 h-16 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white shadow-lg active:scale-95 transition-transform -translate-y-4"
         >
-          <svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
         </button>
 
-        {/* Nav icons */}
-        <div className="flex items-center gap-1">
+        {/* Nav icons centered */}
+        <div className="flex items-center gap-0 pb-1">
           {navItems.map((item) => {
             const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
             return (
@@ -158,19 +158,19 @@ export default function FloatingActions() {
           })}
         </div>
 
-        {/* Mic button */}
+        {/* Mic button — pops above the bar */}
         <button
           onClick={handleMic}
-          className={`w-14 h-14 rounded-full flex items-center justify-center shadow-xl active:scale-95 transition-all -mt-5 ${
+          className={`w-16 h-16 rounded-full flex items-center justify-center shadow-xl active:scale-95 transition-all -translate-y-4 ${
             listening ? 'bg-red-500 shadow-red-500/40' : 'bg-blue-500 shadow-blue-500/40'
           }`}
         >
           {listening ? (
-            <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2}>
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2}>
               <rect x="6" y="6" width="12" height="12" rx="2" fill="white" />
             </svg>
           ) : (
-            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2}>
+            <svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z" />
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8" />
             </svg>
