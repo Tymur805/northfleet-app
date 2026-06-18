@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 type Message = { role: 'user' | 'ai'; text: string }
 
@@ -43,9 +43,10 @@ const quickActions = [
 
 export default function FloatingActions() {
   const pathname = usePathname()
+  const router = useRouter()
   const [listening, setListening] = useState(false)
   const [plusOpen, setPlusOpen] = useState(false)
-  const [overlay, setOverlay] = useState<{ userText?: string; aiText?: string; loading?: boolean } | null>(null)
+  const [overlay, setOverlay] = useState<{ userText?: string; aiText?: string; loading?: boolean; copyText?: string } | null>(null)
   const recognitionRef = useRef<any>(null)
 
   function handleMic() {
@@ -80,7 +81,15 @@ export default function FloatingActions() {
           body: JSON.stringify({ message: text }),
         })
         const data = await res.json()
-        setOverlay({ userText: text, aiText: data.reply || '...' })
+        if (data.actions?.length) {
+          for (const action of data.actions) {
+            if (action.type === 'navigate') setTimeout(() => router.push(action.path), 900)
+          }
+          const copyAction = data.actions.find((a: any) => a.type === 'copy_message')
+          setOverlay({ userText: text, aiText: data.reply || 'Done.', copyText: copyAction?.text })
+        } else {
+          setOverlay({ userText: text, aiText: data.reply || '...' })
+        }
       } catch {
         setOverlay({ userText: text, aiText: 'Connection error.' })
       }
@@ -114,7 +123,17 @@ export default function FloatingActions() {
               <p className="text-white text-sm leading-relaxed">{overlay.aiText}</p>
             )}
             {!overlay.loading && (
-              <button onClick={() => setOverlay(null)} className="mt-3 text-[11px] text-zinc-500 underline">Dismiss</button>
+              <div className="flex items-center gap-3 mt-3">
+                <button onClick={() => setOverlay(null)} className="text-[11px] text-zinc-500 underline">Dismiss</button>
+                {overlay.copyText && (
+                  <button
+                    onClick={() => navigator.clipboard.writeText(overlay.copyText!)}
+                    className="text-[11px] bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full"
+                  >
+                    Copy message
+                  </button>
+                )}
+              </div>
             )}
           </div>
         </div>
