@@ -103,6 +103,19 @@ const tools: Anthropic.Tool[] = [
     input_schema: { type: 'object' as const, properties: {}, required: [] }
   },
   {
+    name: 'create_reminder',
+    description: 'Create a reminder for the fleet owner. Use when user says "remind me", "нагадай", "rappelle-moi" etc.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        title: { type: 'string', description: 'What to remind about' },
+        due_date: { type: 'string', description: 'Date in YYYY-MM-DD format' },
+        vehicle: { type: 'string', description: 'Optional vehicle name this reminder is about' },
+      },
+      required: ['title', 'due_date']
+    }
+  },
+  {
     name: 'write_customer_message',
     description: 'Write a professional English message to a Turo customer based on the user\'s rough instruction.',
     input_schema: {
@@ -207,6 +220,12 @@ After using a tool, confirm what you did in 1-2 sentences.`
         } else {
           result = `Error: ${JSON.stringify(inserted)}`
         }
+      }
+
+      else if (toolUse.name === 'create_reminder') {
+        clientActions.push({ type: 'create_reminder', reminder: { id: Date.now().toString(), title: input.title, due_date: input.due_date, vehicle: input.vehicle || '', done: false } })
+        clientActions.push({ type: 'navigate', path: '/reminders' })
+        result = `Reminder created: "${input.title}" for ${input.due_date}`
       }
 
       else if (toolUse.name === 'write_customer_message') {
