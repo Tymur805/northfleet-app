@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
@@ -52,10 +52,10 @@ export default function Home() {
   if (loading) return (
     <div className="flex flex-col gap-2 animate-pulse">
       <div className="grid grid-cols-3 gap-2">
-        {[0,1,2].map(i => <div key={i} className="skeleton h-16 rounded-[16px]" />)}
+        {[0,1,2].map(i => <div key={i} className="skeleton h-16 rounded-[24px]" />)}
       </div>
-      <div className="skeleton h-12 rounded-[16px]" />
-      <div className="skeleton h-12 rounded-[16px]" />
+      <div className="skeleton h-12 rounded-[24px]" />
+      <div className="skeleton h-12 rounded-[24px]" />
     </div>
   )
 
@@ -69,7 +69,7 @@ export default function Home() {
           { label: 'This Week', value: weekEarnings, sub: `${trips.filter(t=>t.start_date>=weekStr).length} trips` },
           { label: 'This Month', value: monthEarnings, sub: `${trips.filter(t=>t.start_date?.startsWith(thisMonth)).length} trips` },
         ].map(w => (
-          <Link key={w.label} href="/finance" className="pressable rounded-[16px] p-3 flex flex-col gap-1"
+          <Link key={w.label} href="/finance" className="pressable rounded-[24px] p-3 flex flex-col gap-1"
             style={{ background: '#111', border: '1px solid rgba(255,255,255,0.07)' }}>
             <p className="text-[9px] font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.3)' }}>{w.label}</p>
             <p className="text-base font-bold" style={{ color: '#34C759' }}>${w.value.toLocaleString()}</p>
@@ -80,7 +80,7 @@ export default function Home() {
 
       {/* FLEET STATUS ROW */}
       <div className="grid grid-cols-3 gap-1.5">
-        <Link href="/vehicles" className="pressable rounded-[16px] p-3 flex items-center gap-2"
+        <Link href="/vehicles" className="pressable rounded-[24px] p-3 flex items-center gap-2"
           style={{ background: '#111', border: '1px solid rgba(255,255,255,0.07)' }}>
           <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(10,132,255,0.15)' }}>
             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#0A84FF" strokeWidth={2}>
@@ -93,7 +93,7 @@ export default function Home() {
           </div>
         </Link>
 
-        <Link href="/trips" className="pressable rounded-[16px] p-3 flex items-center gap-2"
+        <Link href="/trips" className="pressable rounded-[24px] p-3 flex items-center gap-2"
           style={{ background: '#111', border: '1px solid rgba(255,255,255,0.07)' }}>
           <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(52,199,89,0.15)' }}>
             <span className="w-2 h-2 rounded-full animate-pulse-dot" style={{ background: '#34C759' }} />
@@ -104,7 +104,7 @@ export default function Home() {
           </div>
         </Link>
 
-        <Link href="/finance" className="pressable rounded-[16px] p-3 flex items-center gap-2"
+        <Link href="/finance" className="pressable rounded-[24px] p-3 flex items-center gap-2"
           style={{ background: '#111', border: '1px solid rgba(255,255,255,0.07)' }}>
           <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(255,255,255,0.06)' }}>
             <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.5)" strokeWidth={2}>
@@ -127,7 +127,7 @@ export default function Home() {
             const label = v ? (v.nickname || `${v.make} ${v.model}`) : `#${trip.vehicle_id}`
             const when = trip.end_date === today ? 'Today' : trip.end_date === tomorrow ? 'Tomorrow' : 'In 2 days'
             return (
-              <div key={trip.id} className="pressable rounded-[16px] px-3 py-2.5 flex items-center justify-between"
+              <div key={trip.id} className="pressable rounded-[24px] px-3 py-2.5 flex items-center justify-between"
                 style={{ background: 'rgba(255,159,10,0.05)', border: '1px solid rgba(255,159,10,0.15)' }}>
                 <div className="flex items-center gap-2.5">
                   <div className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(255,159,10,0.12)' }}>
@@ -153,7 +153,7 @@ export default function Home() {
             const v = vehicleMap[trip.vehicle_id]
             const label = v ? (v.nickname || `${v.make} ${v.model}`) : `#${trip.vehicle_id}`
             return (
-              <div key={trip.id} className="pressable rounded-[16px] px-3 py-2.5 flex items-center justify-between"
+              <div key={trip.id} className="pressable rounded-[24px] px-3 py-2.5 flex items-center justify-between"
                 style={{ background: '#111', border: '1px solid rgba(52,199,89,0.12)' }}>
                 <div className="flex items-center gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full animate-pulse-dot shrink-0" style={{ background: '#34C759' }} />
@@ -177,7 +177,7 @@ export default function Home() {
             const v = vehicleMap[m.vehicle_id]
             const label = v ? (v.nickname || `${v.make} ${v.model}`) : `#${m.vehicle_id}`
             return (
-              <Link key={m.id} href="/maintenance" className="pressable rounded-[16px] px-3 py-2.5 flex items-center justify-between"
+              <Link key={m.id} href="/maintenance" className="pressable rounded-[24px] px-3 py-2.5 flex items-center justify-between"
                 style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)' }}>
                 <div className="flex items-center gap-2.5">
                   <div className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(255,159,10,0.1)' }}>
@@ -204,3 +204,4 @@ export default function Home() {
     </div>
   )
 }
+

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
@@ -42,7 +42,7 @@ export default function MaintenancePage() {
 
       {loading ? (
         <div className="flex flex-col gap-2 animate-pulse">
-          {[0,1,2].map(i => <div key={i} className="skeleton h-16 rounded-[20px]" />)}
+          {[0,1,2].map(i => <div key={i} className="skeleton h-16 rounded-[28px]" />)}
         </div>
       ) : records.length === 0 ? (
         <div className="text-center py-16" style={{ color: 'rgba(255,255,255,0.2)' }}>
@@ -54,10 +54,10 @@ export default function MaintenancePage() {
           {records.map((record, i) => {
             const color = typeColors[record.type] || 'rgba(255,255,255,0.4)'
             return (
-              <div key={record.id} className="pressable rounded-[20px] p-3.5 flex items-center justify-between animate-fade-up"
+              <div key={record.id} className="pressable rounded-[28px] p-3.5 flex items-center justify-between animate-fade-up"
                 style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.07)', animationDelay: `${i * 30}ms` }}>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-[14px] flex items-center justify-center shrink-0"
+                  <div className="w-10 h-10 rounded-[20px] flex items-center justify-center shrink-0"
                     style={{ background: `${color}18` }}>
                     <div className="w-3 h-3 rounded-full" style={{ background: color }} />
                   </div>
@@ -83,3 +83,4 @@ export default function MaintenancePage() {
     </div>
   )
 }
+

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 
@@ -18,7 +18,7 @@ export default function TripsTabs({ trips, vehicles = [] }: { trips: Trip[], veh
   return (
     <div className="flex flex-col gap-3">
       {/* Tabs */}
-      <div className="flex gap-1 p-1 rounded-[14px]" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="flex gap-1 p-1 rounded-[20px]" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.06)' }}>
         {(['booked', 'history'] as const).map(t => (
           <button key={t} onClick={() => setTab(t)}
             className="pressable flex-1 py-1.5 rounded-[10px] text-[11px] font-semibold transition-all"
@@ -37,7 +37,7 @@ export default function TripsTabs({ trips, vehicles = [] }: { trips: Trip[], veh
           const vehicleLabel = v ? (v.nickname || `${v.year} ${v.make} ${v.model}`) : `Vehicle #${trip.vehicle_id}`
 
           return (
-            <div key={trip.id} className="pressable rounded-[20px] p-3.5 flex items-center justify-between animate-fade-up"
+            <div key={trip.id} className="pressable rounded-[28px] p-3.5 flex items-center justify-between animate-fade-up"
               style={{ background: '#111111', border: `1px solid ${active ? 'rgba(52,199,89,0.18)' : 'rgba(255,255,255,0.07)'}`, animationDelay: `${i * 30}ms` }}>
               <div className="flex items-center gap-3">
                 {active && <span className="w-2 h-2 rounded-full animate-pulse-dot shrink-0" style={{ background: '#34C759' }} />}
@@ -73,3 +73,4 @@ export default function TripsTabs({ trips, vehicles = [] }: { trips: Trip[], veh
     </div>
   )
 }
+

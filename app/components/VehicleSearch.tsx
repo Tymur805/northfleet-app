@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -32,7 +32,7 @@ export default function VehicleSearch({ vehicles }: { vehicles: Vehicle[] }) {
       </div>
 
       {filtered.map(v => (
-        <Link key={v.id} href={`/vehicles/${v.id}`} className="pressable block rounded-[16px] px-3 py-2.5"
+        <Link key={v.id} href={`/vehicles/${v.id}`} className="pressable block rounded-[24px] px-3 py-2.5"
           style={{ background: '#111', border: '1px solid rgba(255,255,255,0.07)' }}>
 
           <div className="flex items-center justify-between">
@@ -72,3 +72,4 @@ export default function VehicleSearch({ vehicles }: { vehicles: Vehicle[] }) {
     </div>
   )
 }
+

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
@@ -38,7 +38,7 @@ export default function TripsPage() {
       </div>
       {loading ? (
         <div className="flex flex-col gap-2 animate-pulse">
-          {[0,1,2].map(i => <div key={i} className="skeleton h-16 rounded-[20px]" />)}
+          {[0,1,2].map(i => <div key={i} className="skeleton h-16 rounded-[28px]" />)}
         </div>
       ) : (
         <TripsTabs trips={trips} vehicles={vehicles} />
@@ -46,3 +46,4 @@ export default function TripsPage() {
     </div>
   )
 }
+

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 
@@ -82,7 +82,7 @@ export default function RemindersPage() {
             const v = vehicleMap[t.vehicle_id]
             const vLabel = v ? (v.nickname || `${v.year} ${v.make} ${v.model}`) : `Vehicle #${t.vehicle_id}`
             return (
-              <div key={`return-${t.id}`} className="pressable rounded-[20px] p-3.5 flex items-center justify-between"
+              <div key={`return-${t.id}`} className="pressable rounded-[28px] p-3.5 flex items-center justify-between"
                 style={{ background: 'rgba(255,159,10,0.06)', border: '1px solid rgba(255,159,10,0.18)' }}>
                 <div>
                   <p className="font-semibold text-sm text-white">Return: {vLabel}</p>
@@ -97,7 +97,7 @@ export default function RemindersPage() {
             const v = vehicleMap[t.vehicle_id]
             const vLabel = v ? (v.nickname || `${v.year} ${v.make} ${v.model}`) : `Vehicle #${t.vehicle_id}`
             return (
-              <div key={`pickup-${t.id}`} className="pressable rounded-[20px] p-3.5 flex items-center justify-between"
+              <div key={`pickup-${t.id}`} className="pressable rounded-[28px] p-3.5 flex items-center justify-between"
                 style={{ background: 'rgba(10,132,255,0.06)', border: '1px solid rgba(10,132,255,0.18)' }}>
                 <div>
                   <p className="font-semibold text-sm text-white">Pickup: {vLabel}</p>
@@ -115,7 +115,7 @@ export default function RemindersPage() {
         <div className="flex flex-col gap-2">
           <p className="text-[10px] font-semibold uppercase tracking-widest px-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Your Reminders</p>
           {activeReminders.sort((a, b) => a.due_date.localeCompare(b.due_date)).map(r => (
-            <div key={r.id} className="rounded-[20px] p-3.5 flex items-center gap-3"
+            <div key={r.id} className="rounded-[28px] p-3.5 flex items-center gap-3"
               style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.07)' }}>
               <button onClick={() => toggle(r.id)} className="w-5 h-5 rounded-full shrink-0"
                 style={{ border: '2px solid rgba(255,255,255,0.2)' }} />
@@ -165,3 +165,4 @@ export default function RemindersPage() {
     </div>
   )
 }
+

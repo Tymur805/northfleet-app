@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import FinanceTabs from '../components/FinanceTabs'
@@ -46,7 +46,7 @@ export default function FinancePage() {
         return (
           <div className="grid grid-cols-3 gap-1.5">
             {[{l:'Today',v:todayInc},{l:'This Week',v:weekInc},{l:'This Month',v:monthInc}].map(w=>(
-              <div key={w.l} className="rounded-[14px] p-2.5" style={{background:'#111',border:'1px solid rgba(255,255,255,0.07)'}}>
+              <div key={w.l} className="rounded-[20px] p-2.5" style={{background:'#111',border:'1px solid rgba(255,255,255,0.07)'}}>
                 <p className="text-[9px] uppercase tracking-widest font-semibold" style={{color:'rgba(255,255,255,0.28)'}}>{w.l}</p>
                 <p className="text-[15px] font-bold mt-1" style={{color:'#34C759'}}>${w.v.toLocaleString()}</p>
                 <p className="text-[9px] mt-0.5" style={{color:'rgba(255,255,255,0.2)'}}>revenue</p>
@@ -58,7 +58,7 @@ export default function FinancePage() {
 
       {/* All-time row */}
       {!loading && (
-        <div className="rounded-[14px] px-3 py-2.5 flex items-center justify-between"
+        <div className="rounded-[20px] px-3 py-2.5 flex items-center justify-between"
           style={{ background: '#111', border: '1px solid rgba(255,255,255,0.07)' }}>
           <div className="flex items-center gap-4">
             <div>
@@ -81,7 +81,7 @@ export default function FinancePage() {
 
       {loading ? (
         <div className="flex flex-col gap-1.5 animate-pulse">
-          {[0,1,2].map(i => <div key={i} className="skeleton h-12 rounded-[14px]" />)}
+          {[0,1,2].map(i => <div key={i} className="skeleton h-12 rounded-[20px]" />)}
         </div>
       ) : (
         <FinanceTabs trips={trips} expenses={expenses} vehicles={vehicles} />
@@ -89,3 +89,4 @@ export default function FinancePage() {
     </div>
   )
 }
+
