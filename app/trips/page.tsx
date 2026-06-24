@@ -27,13 +27,19 @@ export default function TripsPage() {
   }, [])
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">Trips</h1>
-        <Link href="/trips/new" className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-black font-bold text-lg hover:opacity-80 transition-opacity">+</Link>
+    <div className="flex flex-col gap-3 animate-fade-up">
+      <div className="flex items-center justify-between mb-1">
+        <h1 className="text-[17px] font-semibold text-white">Trips</h1>
+        <Link href="/trips/new" className="pressable h-8 px-3 rounded-full text-sm font-medium flex items-center gap-1.5"
+          style={{ background: '#0A84FF', color: 'white', boxShadow: '0 0 16px rgba(10,132,255,0.3)' }}>
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+          Add
+        </Link>
       </div>
       {loading ? (
-        <div className="text-center py-16 text-zinc-600">Loading...</div>
+        <div className="flex flex-col gap-2 animate-pulse">
+          {[0,1,2].map(i => <div key={i} className="skeleton h-16 rounded-[20px]" />)}
+        </div>
       ) : (
         <TripsTabs trips={trips} vehicles={vehicles} />
       )}

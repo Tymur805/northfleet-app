@@ -81,7 +81,7 @@ export default function FloatingActions() {
       {overlay && (
         <div className="fixed left-1/2 -translate-x-1/2 w-full max-w-lg px-4 z-50 pointer-events-none"
           style={{ bottom: NAV_H + 80 }}>
-          <div className="pointer-events-auto bg-zinc-900 border border-zinc-700 rounded-2xl p-4 shadow-2xl">
+          <div className="pointer-events-auto rounded-[20px] p-4" style={{ background: 'rgba(22,22,22,0.97)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 16px 48px rgba(0,0,0,0.7)' }}>
             {overlay.userText && <p className="text-zinc-500 text-xs mb-2">"{overlay.userText}"</p>}
             {overlay.loading ? <p className="text-zinc-400 text-sm">Thinking...</p> : <p className="text-white text-sm leading-relaxed">{overlay.aiText}</p>}
             {!overlay.loading && (
@@ -96,12 +96,13 @@ export default function FloatingActions() {
 
       {/* Plus menu */}
       {plusOpen && (
-        <div data-plus className="fixed z-50 flex flex-col gap-2 px-4"
+        <div data-plus className="fixed z-50 flex flex-col gap-1.5 px-4 animate-fade-up"
           style={{ bottom: BTN_B + 64, left: 0 }}>
           {QUICK.map(a => (
             <Link key={a.href} href={a.href} onClick={() => setPlusOpen(false)}
-              className="flex items-center gap-3 bg-zinc-800 border border-zinc-700 rounded-2xl px-4 py-3 shadow-xl active:opacity-70">
-              <span className="text-xl">{a.icon}</span>
+              className="pressable flex items-center gap-3 rounded-[16px] px-4 py-3"
+              style={{ background: 'rgba(28,28,30,0.95)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 8px 32px rgba(0,0,0,0.6)' }}>
+              <span className="text-lg">{a.icon}</span>
               <span className="text-sm font-medium text-white">{a.label}</span>
             </Link>
           ))}
@@ -111,10 +112,10 @@ export default function FloatingActions() {
       {/* PLUS BUTTON — fixed, independent */}
       <button data-plus
         onClick={() => { setPlusOpen(p => !p); setOverlay(null) }}
-        style={{ position: 'fixed', bottom: BTN_B, left: 20, zIndex: 50 }}
-        className="w-14 h-14 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white shadow-xl active:scale-95 transition-transform"
+        style={{ position: 'fixed', bottom: BTN_B, left: 20, zIndex: 50, background: '#1C1C1E', border: '1px solid rgba(255,255,255,0.12)', boxShadow: '0 8px 24px rgba(0,0,0,0.5)' }}
+        className="w-14 h-14 rounded-full flex items-center justify-center text-white active:scale-95 transition-transform"
       >
-        <svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.8)" strokeWidth={2.2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4"/>
         </svg>
       </button>
@@ -122,8 +123,8 @@ export default function FloatingActions() {
       {/* MIC BUTTON — fixed, independent */}
       <button
         onClick={handleMic}
-        style={{ position: 'fixed', bottom: BTN_B, right: 20, zIndex: 50 }}
-        className={`w-14 h-14 rounded-full flex items-center justify-center shadow-xl active:scale-95 transition-all ${listening ? 'bg-red-500 shadow-red-500/40' : 'bg-blue-500 shadow-blue-500/40'}`}
+        style={{ position: 'fixed', bottom: BTN_B, right: 20, zIndex: 50, boxShadow: listening ? '0 0 24px rgba(255,69,58,0.5), 0 8px 24px rgba(0,0,0,0.5)' : '0 0 20px rgba(10,132,255,0.4), 0 8px 24px rgba(0,0,0,0.5)', background: listening ? '#FF453A' : '#0A84FF' }}
+        className="w-14 h-14 rounded-full flex items-center justify-center active:scale-95 transition-all"
       >
         {listening
           ? <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2}><rect x="6" y="6" width="12" height="12" rx="2" fill="white"/></svg>
@@ -132,8 +133,8 @@ export default function FloatingActions() {
       </button>
 
       {/* NAV BAR — fixed at very bottom */}
-      <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg bg-[#0f1117] border-t border-zinc-800 z-40 flex items-center justify-around"
-        style={{ height: NAV_H, paddingBottom: 'env(safe-area-inset-bottom)', paddingLeft: 72, paddingRight: 72 }}>
+      <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg z-40 flex items-center justify-around"
+        style={{ height: NAV_H, paddingBottom: 'env(safe-area-inset-bottom)', paddingLeft: 72, paddingRight: 72, background: 'rgba(10,10,10,0.92)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
         {NAV.map(item => {
           const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
           return (

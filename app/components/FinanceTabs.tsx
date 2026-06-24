@@ -28,28 +28,30 @@ function MonthlyChart({ trips, expenses }: { trips: Trip[]; expenses: Expense[] 
   const maxVal = Math.max(...data.map(d => Math.max(d.income, d.expenses)), 1)
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
-      <p className="text-xs text-zinc-500 uppercase tracking-widest mb-4">Last 6 Months</p>
-      <div className="flex items-end justify-between gap-1 h-28">
-        {data.map(d => (
+    <div className="rounded-[20px] p-4" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.07)' }}>
+      <p className="text-[10px] font-semibold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>Last 6 Months</p>
+      <div className="flex items-end justify-between gap-1.5" style={{ height: 88 }}>
+        {data.map((d, i) => (
           <div key={d.key} className="flex-1 flex flex-col items-center gap-1">
-            <div className="w-full flex gap-0.5 items-end" style={{ height: 80 }}>
-              <div
-                className="flex-1 bg-green-500/70 rounded-t"
-                style={{ height: `${(d.income / maxVal) * 100}%`, minHeight: d.income > 0 ? 3 : 0 }}
-              />
-              <div
-                className="flex-1 bg-red-400/60 rounded-t"
-                style={{ height: `${(d.expenses / maxVal) * 100}%`, minHeight: d.expenses > 0 ? 3 : 0 }}
-              />
+            <div className="w-full flex gap-0.5 items-end" style={{ height: 68 }}>
+              <div className="flex-1 rounded-t-sm"
+                style={{ height: `${(d.income / maxVal) * 100}%`, minHeight: d.income > 0 ? 2 : 0, background: '#34C759', opacity: 0.65 + i * 0.06 }} />
+              <div className="flex-1 rounded-t-sm"
+                style={{ height: `${(d.expenses / maxVal) * 100}%`, minHeight: d.expenses > 0 ? 2 : 0, background: '#FF453A', opacity: 0.55 }} />
             </div>
-            <span className="text-[9px] text-zinc-500">{d.label}</span>
+            <span className="text-[9px]" style={{ color: 'rgba(255,255,255,0.3)' }}>{d.label}</span>
           </div>
         ))}
       </div>
-      <div className="flex gap-4 mt-2">
-        <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-sm bg-green-500/70" /><span className="text-[10px] text-zinc-400">Income</span></div>
-        <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-sm bg-red-400/60" /><span className="text-[10px] text-zinc-400">Expenses</span></div>
+      <div className="flex gap-4 mt-3">
+        <div className="flex items-center gap-1.5">
+          <div className="w-2 h-2 rounded-sm" style={{ background: '#34C759', opacity: 0.7 }} />
+          <span className="text-[10px]" style={{ color: 'rgba(255,255,255,0.4)' }}>Income</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-2 h-2 rounded-sm" style={{ background: '#FF453A', opacity: 0.6 }} />
+          <span className="text-[10px]" style={{ color: 'rgba(255,255,255,0.4)' }}>Expenses</span>
+        </div>
       </div>
     </div>
   )
@@ -72,120 +74,139 @@ export default function FinanceTabs({ trips, expenses, vehicles }: { trips: Trip
 
   const filteredTrips = filterByPeriod(trips)
   const filteredExpenses = filterByPeriod(expenses)
+  const periodIncome = filteredTrips.reduce((s, t) => s + Number(t.earnings), 0)
+  const periodExpenses = filteredExpenses.reduce((s, e) => s + Number(e.amount), 0)
+  const profit = periodIncome - periodExpenses
 
   const byCategory: Record<string, number> = {}
   filteredExpenses.forEach(e => { byCategory[e.category] = (byCategory[e.category] ?? 0) + Number(e.amount) })
-  const totalExpenses = Object.values(byCategory).reduce((a, b) => a + b, 0)
+  const totalExpCat = Object.values(byCategory).reduce((a, b) => a + b, 0)
   const sortedCategories = Object.entries(byCategory).sort((a, b) => b[1] - a[1])
 
-  const periodIncome = filteredTrips.reduce((s, t) => s + Number(t.earnings), 0)
-  const periodExpenses = filteredExpenses.reduce((s, e) => s + Number(e.amount), 0)
-
   return (
-    <div className="flex flex-col gap-4">
-      {/* Period selector */}
-      <div className="flex gap-2 overflow-x-auto pb-1">
+    <div className="flex flex-col gap-3">
+      {/* Period chips */}
+      <div className="flex gap-1.5 overflow-x-auto pb-0.5">
         {PERIODS.map(p => (
           <button key={p} onClick={() => setPeriod(p)}
-            className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${period === p ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-400'}`}>
+            className="pressable shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all"
+            style={period === p ? { background: 'white', color: '#000' } : { background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.45)' }}>
             {p}
           </button>
         ))}
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-1 bg-zinc-800 rounded-xl p-1">
+      {/* Tab bar */}
+      <div className="flex gap-1 p-1 rounded-[14px]" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.06)' }}>
         {(['overview', 'income', 'expenses', 'vehicles'] as const).map(t => (
           <button key={t} onClick={() => setTab(t)}
-            className={`flex-1 py-2 rounded-lg text-xs font-medium transition-colors ${tab === t ? 'bg-zinc-600 text-white' : 'text-zinc-400'}`}>
+            className="pressable flex-1 py-1.5 rounded-[10px] text-[11px] font-semibold transition-all"
+            style={tab === t ? { background: '#1C1C1E', color: 'white' } : { color: 'rgba(255,255,255,0.35)' }}>
             {t.charAt(0).toUpperCase() + t.slice(1)}
           </button>
         ))}
       </div>
 
       {tab === 'overview' && (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2 animate-fade-up">
           <MonthlyChart trips={trips} expenses={expenses} />
-          <div className="grid grid-cols-2 gap-2">
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-3">
-              <p className="text-[10px] text-zinc-500 uppercase tracking-widest">Income</p>
-              <p className="text-xl font-bold text-green-400 mt-1">${periodIncome.toLocaleString()}</p>
-              <p className="text-[10px] text-zinc-600 mt-0.5">{filteredTrips.length} trips</p>
+          <div className="grid grid-cols-3 gap-2">
+            <div className="rounded-[20px] p-3" style={{ background: 'rgba(52,199,89,0.07)', border: '1px solid rgba(52,199,89,0.18)' }}>
+              <p className="text-[10px] uppercase tracking-widest" style={{ color: 'rgba(52,199,89,0.6)' }}>Income</p>
+              <p className="text-base font-bold mt-1" style={{ color: '#34C759' }}>${periodIncome.toLocaleString()}</p>
+              <p className="text-[10px] mt-0.5" style={{ color: 'rgba(255,255,255,0.2)' }}>{filteredTrips.length} trips</p>
             </div>
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-3">
-              <p className="text-[10px] text-zinc-500 uppercase tracking-widest">Profit</p>
-              <p className={`text-xl font-bold mt-1 ${periodIncome - periodExpenses >= 0 ? 'text-white' : 'text-red-400'}`}>
-                ${(periodIncome - periodExpenses).toLocaleString()}
-              </p>
-              <p className="text-[10px] text-zinc-600 mt-0.5">after expenses</p>
+            <div className="rounded-[20px] p-3" style={{ background: 'rgba(255,69,58,0.07)', border: '1px solid rgba(255,69,58,0.18)' }}>
+              <p className="text-[10px] uppercase tracking-widest" style={{ color: 'rgba(255,69,58,0.7)' }}>Expenses</p>
+              <p className="text-base font-bold mt-1" style={{ color: '#FF453A' }}>${periodExpenses.toLocaleString()}</p>
+              <p className="text-[10px] mt-0.5" style={{ color: 'rgba(255,255,255,0.2)' }}>{filteredExpenses.length} items</p>
+            </div>
+            <div className="rounded-[20px] p-3" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <p className="text-[10px] uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.3)' }}>Profit</p>
+              <p className="text-base font-bold mt-1" style={{ color: profit >= 0 ? 'white' : '#FF453A' }}>${profit.toLocaleString()}</p>
+              <p className="text-[10px] mt-0.5" style={{ color: 'rgba(255,255,255,0.2)' }}>net</p>
             </div>
           </div>
         </div>
       )}
 
       {tab === 'income' && (
-        <div className="flex flex-col gap-3">
-          {filteredTrips.map(trip => (
-            <div key={trip.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between">
+        <div className="flex flex-col gap-2 animate-fade-up">
+          {filteredTrips.map((trip, i) => (
+            <div key={trip.id} className="pressable rounded-[20px] p-3.5 flex items-center justify-between"
+              style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.07)', animationDelay: `${i * 30}ms` }}>
               <div>
-                <p className="font-semibold text-white">{trip.customer_name}</p>
-                <p className="text-sm text-zinc-500 mt-0.5">{trip.start_date}</p>
+                <p className="font-semibold text-sm text-white">{trip.customer_name}</p>
+                <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>{trip.start_date}</p>
               </div>
-              <p className="font-semibold text-green-400">+${Number(trip.earnings).toLocaleString()}</p>
+              <p className="font-semibold text-sm" style={{ color: '#34C759' }}>+${Number(trip.earnings).toLocaleString()}</p>
             </div>
           ))}
-          {filteredTrips.length === 0 && <p className="text-center py-16 text-zinc-600">No income for this period.</p>}
+          {filteredTrips.length === 0 && <p className="text-center py-12 text-sm" style={{ color: 'rgba(255,255,255,0.2)' }}>No income for this period.</p>}
         </div>
       )}
 
       {tab === 'expenses' && (
-        <div className="flex flex-col gap-3">
-          <Link href="/finance/expenses/new"
-            className="flex items-center justify-center gap-2 border border-dashed border-zinc-700 rounded-2xl py-4 text-zinc-500 text-sm">
-            + Add Expense
+        <div className="flex flex-col gap-2 animate-fade-up">
+          <Link href="/finance/expenses/new" className="pressable flex items-center justify-center gap-2 rounded-[20px] py-3.5 text-sm"
+            style={{ border: '1px dashed rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.35)' }}>
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+            Add Expense
           </Link>
           {filteredExpenses.length > 0 && (
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex flex-col gap-3">
-              <p className="text-sm font-semibold text-zinc-400">By Category</p>
-              {sortedCategories.map(([cat, amount]) => (
-                <div key={cat} className="flex flex-col gap-1">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-white">{cat}</span>
-                    <span className="text-zinc-400">${amount.toLocaleString()}</span>
+            <div className="rounded-[20px] p-4" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <p className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.3)' }}>By Category</p>
+              <div className="flex flex-col gap-2.5">
+                {sortedCategories.map(([cat, amount]) => (
+                  <div key={cat} className="flex flex-col gap-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-white">{cat}</span>
+                      <span className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>${amount.toLocaleString()}</span>
+                    </div>
+                    <div className="h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                      <div className="h-full rounded-full" style={{ width: `${(amount / totalExpCat) * 100}%`, background: '#FF453A', opacity: 0.7 }} />
+                    </div>
                   </div>
-                  <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-red-400 rounded-full" style={{ width: `${(amount / totalExpenses) * 100}%` }} />
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
-          {filteredExpenses.map(expense => (
-            <div key={expense.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between">
+          {filteredExpenses.map((e, i) => (
+            <div key={e.id} className="pressable rounded-[20px] p-3.5 flex items-center justify-between"
+              style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.07)' }}>
               <div>
-                <p className="font-semibold text-white">{expense.description || expense.category}</p>
-                <p className="text-sm text-zinc-500 mt-0.5">{expense.category} · {expense.date}</p>
+                <p className="font-semibold text-sm text-white">{e.description || e.category}</p>
+                <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>{e.category} · {e.date}</p>
               </div>
-              <p className="font-semibold text-red-400">-${Number(expense.amount).toLocaleString()}</p>
+              <p className="font-semibold text-sm" style={{ color: '#FF453A' }}>-${Number(e.amount).toLocaleString()}</p>
             </div>
           ))}
-          {filteredExpenses.length === 0 && <p className="text-center py-16 text-zinc-600">No expenses for this period.</p>}
+          {filteredExpenses.length === 0 && <p className="text-center py-12 text-sm" style={{ color: 'rgba(255,255,255,0.2)' }}>No expenses for this period.</p>}
         </div>
       )}
 
       {tab === 'vehicles' && (
-        <div className="flex flex-col gap-3">
-          {vehicles.map(vehicle => {
+        <div className="flex flex-col gap-2 animate-fade-up">
+          {vehicles.map((vehicle, i) => {
             const earned = filteredTrips.filter(t => t.vehicle_id === vehicle.id).reduce((s, t) => s + Number(t.earnings), 0)
             const spent = filteredExpenses.filter(e => e.vehicle_id === vehicle.id).reduce((s, e) => s + Number(e.amount), 0)
-            const profit = earned - spent
+            const vprofit = earned - spent
             return (
-              <div key={vehicle.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex flex-col gap-3">
-                <p className="font-semibold text-white">{vehicle.nickname ?? `${vehicle.year} ${vehicle.make} ${vehicle.model}`}</p>
+              <div key={vehicle.id} className="rounded-[20px] p-4" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.07)' }}>
+                <p className="font-semibold text-sm text-white mb-3">{vehicle.nickname ?? `${vehicle.year} ${vehicle.make} ${vehicle.model}`}</p>
                 <div className="grid grid-cols-3 gap-2">
-                  <div><p className="text-xs text-zinc-500">Income</p><p className="text-sm font-semibold text-green-400">${earned.toLocaleString()}</p></div>
-                  <div><p className="text-xs text-zinc-500">Expenses</p><p className="text-sm font-semibold text-red-400">${spent.toLocaleString()}</p></div>
-                  <div><p className="text-xs text-zinc-500">Profit</p><p className={`text-sm font-semibold ${profit >= 0 ? 'text-white' : 'text-red-400'}`}>${profit.toLocaleString()}</p></div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.3)' }}>Income</p>
+                    <p className="text-sm font-semibold mt-0.5" style={{ color: '#34C759' }}>${earned.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.3)' }}>Expenses</p>
+                    <p className="text-sm font-semibold mt-0.5" style={{ color: '#FF453A' }}>${spent.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.3)' }}>Profit</p>
+                    <p className="text-sm font-semibold mt-0.5" style={{ color: vprofit >= 0 ? 'white' : '#FF453A' }}>${vprofit.toLocaleString()}</p>
+                  </div>
                 </div>
               </div>
             )

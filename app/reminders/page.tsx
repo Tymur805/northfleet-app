@@ -68,90 +68,86 @@ export default function RemindersPage() {
   const doneReminders = reminders.filter(r => r.done)
 
   return (
-    <div className="flex flex-col gap-5">
-      <h1 className="text-2xl font-bold text-white">Reminders</h1>
-
-      <p className="text-xs text-zinc-500">Use the mic button and say "Remind me to check tires on BMW tomorrow" to add reminders.</p>
+    <div className="flex flex-col gap-3 animate-fade-up">
+      <div className="mb-1">
+        <h1 className="text-[17px] font-semibold text-white">Reminders</h1>
+        <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.25)' }}>Say "Remind me to check tires on BMW tomorrow"</p>
+      </div>
 
       {/* Auto-reminders from trips */}
       {!loading && (upcomingReturns.length > 0 || upcomingPickups.length > 0) && (
-        <div className="flex flex-col gap-3">
-          <p className="text-xs text-zinc-500 uppercase tracking-widest font-semibold">From Your Schedule</p>
-
+        <div className="flex flex-col gap-2">
+          <p className="text-[10px] font-semibold uppercase tracking-widest px-1" style={{ color: 'rgba(255,255,255,0.3)' }}>From Your Schedule</p>
           {upcomingReturns.map(t => {
             const v = vehicleMap[t.vehicle_id]
             const vLabel = v ? (v.nickname || `${v.year} ${v.make} ${v.model}`) : `Vehicle #${t.vehicle_id}`
             return (
-              <div key={`return-${t.id}`} className="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-4 flex items-center justify-between">
+              <div key={`return-${t.id}`} className="pressable rounded-[20px] p-3.5 flex items-center justify-between"
+                style={{ background: 'rgba(255,159,10,0.06)', border: '1px solid rgba(255,159,10,0.18)' }}>
                 <div>
-                  <p className="font-semibold text-white">Return: {vLabel}</p>
-                  <p className="text-sm text-zinc-400 mt-0.5">From {t.customer_name}</p>
+                  <p className="font-semibold text-sm text-white">Return: {vLabel}</p>
+                  <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>From {t.customer_name}</p>
                 </div>
-                <span className="text-xs font-semibold bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-full shrink-0 ml-2">
-                  {daysLabel(t.end_date)}
-                </span>
+                <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full shrink-0 ml-2"
+                  style={{ background: 'rgba(255,159,10,0.12)', color: '#FF9F0A' }}>{daysLabel(t.end_date)}</span>
               </div>
             )
           })}
-
           {upcomingPickups.map(t => {
             const v = vehicleMap[t.vehicle_id]
             const vLabel = v ? (v.nickname || `${v.year} ${v.make} ${v.model}`) : `Vehicle #${t.vehicle_id}`
             return (
-              <div key={`pickup-${t.id}`} className="bg-blue-500/5 border border-blue-500/20 rounded-2xl p-4 flex items-center justify-between">
+              <div key={`pickup-${t.id}`} className="pressable rounded-[20px] p-3.5 flex items-center justify-between"
+                style={{ background: 'rgba(10,132,255,0.06)', border: '1px solid rgba(10,132,255,0.18)' }}>
                 <div>
-                  <p className="font-semibold text-white">Pickup: {vLabel}</p>
-                  <p className="text-sm text-zinc-400 mt-0.5">For {t.customer_name}</p>
+                  <p className="font-semibold text-sm text-white">Pickup: {vLabel}</p>
+                  <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>For {t.customer_name}</p>
                 </div>
-                <span className="text-xs font-semibold bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-full shrink-0 ml-2">
-                  {daysLabel(t.start_date)}
-                </span>
+                <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full shrink-0 ml-2"
+                  style={{ background: 'rgba(10,132,255,0.12)', color: '#0A84FF' }}>{daysLabel(t.start_date)}</span>
               </div>
             )
           })}
         </div>
       )}
 
-      {/* Manual reminders */}
       {activeReminders.length > 0 && (
-        <div className="flex flex-col gap-3">
-          <p className="text-xs text-zinc-500 uppercase tracking-widest font-semibold">Your Reminders</p>
-          {activeReminders
-            .sort((a, b) => a.due_date.localeCompare(b.due_date))
-            .map(r => (
-              <div key={r.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center gap-3">
-                <button
-                  onClick={() => toggle(r.id)}
-                  className="w-5 h-5 rounded-full border-2 border-zinc-600 flex items-center justify-center shrink-0"
-                />
-                <div className="flex-1">
-                  <p className="font-semibold text-white">{r.title}</p>
-                  {r.vehicle && <p className="text-xs text-blue-400 mt-0.5">{r.vehicle}</p>}
-                  <p className="text-xs text-zinc-500 mt-0.5">{daysLabel(r.due_date)} · {r.due_date}</p>
-                </div>
-                <button onClick={() => remove(r.id)} className="text-zinc-600 hover:text-red-400 transition-colors shrink-0">
-                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+        <div className="flex flex-col gap-2">
+          <p className="text-[10px] font-semibold uppercase tracking-widest px-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Your Reminders</p>
+          {activeReminders.sort((a, b) => a.due_date.localeCompare(b.due_date)).map(r => (
+            <div key={r.id} className="rounded-[20px] p-3.5 flex items-center gap-3"
+              style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <button onClick={() => toggle(r.id)} className="w-5 h-5 rounded-full shrink-0"
+                style={{ border: '2px solid rgba(255,255,255,0.2)' }} />
+              <div className="flex-1">
+                <p className="font-semibold text-sm text-white">{r.title}</p>
+                {r.vehicle && <p className="text-[11px] mt-0.5" style={{ color: '#0A84FF' }}>{r.vehicle}</p>}
+                <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.28)' }}>{daysLabel(r.due_date)} · {r.due_date}</p>
               </div>
-            ))}
+              <button onClick={() => remove(r.id)} className="pressable shrink-0">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.25)" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          ))}
         </div>
       )}
 
       {doneReminders.length > 0 && (
-        <div className="flex flex-col gap-2">
-          <p className="text-xs text-zinc-600 uppercase tracking-widest font-semibold">Done</p>
+        <div className="flex flex-col gap-1.5">
+          <p className="text-[10px] font-semibold uppercase tracking-widest px-1" style={{ color: 'rgba(255,255,255,0.15)' }}>Done</p>
           {doneReminders.map(r => (
             <div key={r.id} className="flex items-center gap-3 px-1">
-              <button onClick={() => toggle(r.id)} className="w-5 h-5 rounded-full bg-zinc-700 flex items-center justify-center shrink-0">
-                <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={3}>
+              <button onClick={() => toggle(r.id)} className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
+                style={{ background: 'rgba(52,199,89,0.15)' }}>
+                <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="#34C759" strokeWidth={3}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </button>
-              <p className="text-sm text-zinc-600 line-through">{r.title}</p>
-              <button onClick={() => remove(r.id)} className="ml-auto text-zinc-700">
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <p className="text-sm line-through" style={{ color: 'rgba(255,255,255,0.2)' }}>{r.title}</p>
+              <button onClick={() => remove(r.id)} className="ml-auto pressable">
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.15)" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -161,8 +157,9 @@ export default function RemindersPage() {
       )}
 
       {!loading && activeReminders.length === 0 && upcomingReturns.length === 0 && upcomingPickups.length === 0 && (
-        <div className="text-center py-16 text-zinc-600">
-          No reminders yet. Say something to the mic!
+        <div className="text-center py-16" style={{ color: 'rgba(255,255,255,0.2)' }}>
+          <p className="text-4xl mb-3">🔔</p>
+          <p className="text-sm">No reminders yet. Use the mic!</p>
         </div>
       )}
     </div>
