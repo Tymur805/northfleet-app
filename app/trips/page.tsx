@@ -27,9 +27,9 @@ export default function TripsPage() {
   }, [])
 
   return (
-    <div className="flex flex-col gap-3 animate-fade-up">
+    <div className="flex flex-col gap-2 animate-fade-up">
       <div className="flex items-center justify-between mb-1">
-        <h1 className="text-[17px] font-semibold text-white">Trips</h1>
+        <h1 className="text-[13px] font-semibold text-white">Trips</h1>
         <Link href="/trips/new" className="pressable h-8 px-3 rounded-full text-sm font-medium flex items-center gap-1.5"
           style={{ background: '#0A84FF', color: 'white', boxShadow: '0 0 16px rgba(10,132,255,0.3)' }}>
           <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>

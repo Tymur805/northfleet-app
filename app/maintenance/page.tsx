@@ -27,10 +27,10 @@ export default function MaintenancePage() {
   const totalCost = records.reduce((s, r) => s + Number(r.cost), 0)
 
   return (
-    <div className="flex flex-col gap-3 animate-fade-up">
+    <div className="flex flex-col gap-2 animate-fade-up">
       <div className="flex items-center justify-between mb-1">
         <div>
-          <h1 className="text-[17px] font-semibold text-white">Service</h1>
+          <h1 className="text-[13px] font-semibold text-white">Service</h1>
           {!loading && <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>{records.length} records · ${totalCost.toLocaleString()} total</p>}
         </div>
         <Link href="/maintenance/new" className="pressable h-8 px-3 rounded-full text-sm font-medium flex items-center gap-1.5"
