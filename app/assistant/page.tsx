@@ -18,111 +18,89 @@ export default function AssistantPage() {
 
   function startListening() {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-    if (!SpeechRecognition) {
-      alert('Voice recognition is not supported in this browser. Try Chrome.')
-      return
-    }
+    if (!SpeechRecognition) { alert('Voice recognition not supported. Try Chrome.'); return }
     const recognition = new SpeechRecognition()
-    recognition.continuous = false
-    recognition.interimResults = false
-    recognition.lang = '' // auto-detect language
+    recognition.continuous = false; recognition.interimResults = false; recognition.lang = ''
     recognition.onstart = () => setListening(true)
-    recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript
-      setInput(transcript)
-      setListening(false)
-    }
+    recognition.onresult = (event: any) => { setInput(event.results[0][0].transcript); setListening(false) }
     recognition.onerror = () => setListening(false)
     recognition.onend = () => setListening(false)
     recognitionRef.current = recognition
     recognition.start()
   }
 
-  function stopListening() {
-    recognitionRef.current?.stop()
-    setListening(false)
-  }
+  function stopListening() { recognitionRef.current?.stop(); setListening(false) }
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [messages])
 
-  function handleReply(msg: Message) {
-    setReplyTo(msg)
-    inputRef.current?.focus()
-  }
+  function handleReply(msg: Message) { setReplyTo(msg); inputRef.current?.focus() }
 
   async function sendMessage() {
     if (!input.trim() || loading) return
     const userMessage = replyTo
       ? `Replying to: "${replyTo.text.slice(0, 80)}${replyTo.text.length > 80 ? '...' : ''}"\n\n${input.trim()}`
       : input.trim()
-    setInput('')
-    setReplyTo(null)
-    setMessages((prev) => [...prev, { role: 'user', text: input.trim() }])
+    setInput(''); setReplyTo(null)
+    setMessages(prev => [...prev, { role: 'user', text: input.trim() }])
     setLoading(true)
-
     const res = await fetch('/api/assistant', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: userMessage }),
     })
     const text = await res.text()
     if (!text) {
-      setMessages((prev) => [...prev, { role: 'assistant', text: 'Error: empty response from server.' }])
-      setLoading(false)
-      return
+      setMessages(prev => [...prev, { role: 'assistant', text: 'Error: empty response from server.' }])
+      setLoading(false); return
     }
     const { reply, error } = JSON.parse(text)
-    setMessages((prev) => [...prev, { role: 'assistant', text: reply ?? `Error: ${error}` }])
+    setMessages(prev => [...prev, { role: 'assistant', text: reply ?? `Error: ${error}` }])
     setLoading(false)
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-10rem)]">
-      <h1 className="text-2xl font-bold text-white mb-4">AI Assistant</h1>
+    <div className="flex flex-col pt-1" style={{ height: 'calc(100vh - 10rem)' }}>
+      <h1 className="text-[17px] font-bold text-white mb-4">AI Assistant</h1>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto flex flex-col gap-3 pb-4">
+      <div className="flex-1 overflow-y-auto flex flex-col gap-2.5 pb-4">
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className="flex items-center gap-1.5 group">
+            <div className="flex items-end gap-2 group max-w-[85%]">
               {msg.role === 'assistant' && (
-                <button
-                  onClick={() => handleReply(msg)}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity text-zinc-500 hover:text-zinc-300"
-                >
-                  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mb-0.5"
+                  style={{ background: 'linear-gradient(135deg, #C1121F, #E10600)', boxShadow: '0 0 12px rgba(193,18,31,0.4)' }}>
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                   </svg>
-                </button>
+                </div>
               )}
-              <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+              <div>
+                <div className={`rounded-[18px] px-4 py-3 text-[13px] leading-relaxed ${
+                  msg.role === 'user' ? 'rounded-br-sm' : 'rounded-bl-sm'
+                }`} style={
                   msg.role === 'user'
-                    ? 'bg-white text-black rounded-br-sm'
-                    : 'bg-zinc-800 text-zinc-100 rounded-bl-sm'
-                }`}
-              >
-                {msg.text}
-              </div>
-              {msg.role === 'user' && (
+                    ? { background: 'white', color: '#000' }
+                    : { background: '#181818', color: '#fff', border: '1px solid rgba(255,255,255,0.07)' }
+                }>
+                  {msg.text}
+                </div>
                 <button
                   onClick={() => handleReply(msg)}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity text-zinc-500 hover:text-zinc-300"
-                >
-                  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
-                  </svg>
+                  className="opacity-0 group-hover:opacity-100 transition-opacity text-[11px] mt-1 px-1"
+                  style={{ color: 'rgba(255,255,255,0.3)' }}>
+                  Reply
                 </button>
-              )}
+              </div>
             </div>
           </div>
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-zinc-800 rounded-2xl rounded-bl-sm px-4 py-3 text-zinc-400 text-sm">
-              Thinking...
+            <div className="flex items-center gap-2 px-4 py-3 rounded-[18px] rounded-bl-sm"
+              style={{ background: '#181818', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse-dot" style={{ background: '#C1121F' }} />
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse-dot delay-100" style={{ background: '#C1121F' }} />
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse-dot delay-200" style={{ background: '#C1121F' }} />
             </div>
           </div>
         )}
@@ -131,11 +109,12 @@ export default function AssistantPage() {
 
       {/* Reply preview */}
       {replyTo && (
-        <div className="flex items-center justify-between bg-zinc-800 border-l-2 border-white rounded-lg px-3 py-2 mb-2">
-          <p className="text-xs text-zinc-400 truncate">
+        <div className="flex items-center justify-between rounded-[12px] px-3 py-2 mb-2"
+          style={{ background: '#181818', borderLeft: '2px solid #C1121F' }}>
+          <p className="text-[12px] truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>
             Replying to: {replyTo.text.slice(0, 60)}{replyTo.text.length > 60 ? '...' : ''}
           </p>
-          <button onClick={() => setReplyTo(null)} className="text-zinc-500 hover:text-white ml-2 text-sm">✕</button>
+          <button onClick={() => setReplyTo(null)} className="ml-2 text-[13px]" style={{ color: 'rgba(255,255,255,0.3)' }}>✕</button>
         </div>
       )}
 
@@ -143,28 +122,42 @@ export default function AssistantPage() {
       <div className="flex gap-2 pt-2">
         <button
           onClick={listening ? stopListening : startListening}
-          className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
-            listening ? 'bg-red-500 animate-pulse' : 'bg-zinc-800 hover:bg-zinc-700'
-          }`}
-        >
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2}>
+          className="w-11 h-11 rounded-full flex items-center justify-center spring shrink-0"
+          style={{
+            background: listening
+              ? 'linear-gradient(135deg, #C1121F, #E10600)'
+              : 'rgba(255,255,255,0.07)',
+            border: `1px solid ${listening ? 'rgba(193,18,31,0.4)' : 'rgba(255,255,255,0.1)'}`,
+            boxShadow: listening ? '0 0 16px rgba(193,18,31,0.4)' : 'none',
+          }}>
+          <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
           </svg>
         </button>
         <input
           ref={inputRef}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-          placeholder={listening ? 'Listening...' : 'Ask about your fleet...'}
-          className="flex-1 bg-zinc-800 border border-zinc-700 rounded-full px-4 py-3 text-white text-sm outline-none focus:border-zinc-500 placeholder:text-zinc-500"
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && sendMessage()}
+          placeholder={listening ? 'Listening…' : 'Ask about your fleet…'}
+          className="flex-1 text-[14px] text-white outline-none"
+          style={{
+            background: '#161616',
+            border: '1px solid rgba(255,255,255,0.09)',
+            borderRadius: 999,
+            padding: '0 18px',
+          }}
         />
         <button
           onClick={sendMessage}
-          disabled={loading}
-          className="w-11 h-11 rounded-full bg-white flex items-center justify-center disabled:opacity-40 hover:opacity-80 transition-opacity"
-        >
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="black" strokeWidth={2.5}>
+          disabled={loading || !input.trim()}
+          className="w-11 h-11 rounded-full flex items-center justify-center spring shrink-0"
+          style={{
+            background: 'linear-gradient(135deg, #C1121F, #E10600)',
+            boxShadow: '0 0 16px rgba(193,18,31,0.4)',
+            opacity: loading || !input.trim() ? 0.4 : 1,
+          }}>
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </button>
