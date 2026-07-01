@@ -157,7 +157,7 @@ After using a tool, confirm what you did in 1-2 sentences.`
 
     // If no tool use — return text directly
     if (firstResponse.stop_reason !== 'tool_use') {
-      const text = firstResponse.content.find((b: any) => b.type === 'text')?.text as string ?? ''
+      const text = (firstResponse.content.find((b: any) => b.type === 'text') as any)?.text ?? ''
       return NextResponse.json({ reply: text })
     }
 
@@ -249,7 +249,7 @@ After using a tool, confirm what you did in 1-2 sentences.`
       ],
     })
 
-    const reply = finalResponse.content.find((b: any) => b.type === 'text')?.text as string ?? 'Done.'
+    const reply = (finalResponse.content.find((b: any) => b.type === 'text') as any)?.text ?? 'Done.'
     return NextResponse.json({ reply, actions: clientActions })
   } catch (err: any) {
     console.error('Assistant error:', err)
