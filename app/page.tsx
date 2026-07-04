@@ -86,8 +86,8 @@ export default function Home() {
         <Link href="/vehicles" className="pressable rounded-[20px] p-3 flex items-center gap-2.5"
           style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.06)' }}>
           <div className="w-8 h-8 rounded-[10px] flex items-center justify-center shrink-0"
-            style={{ background: 'rgba(193,18,31,0.12)' }}>
-            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="#C1121F" strokeWidth={2}>
+            style={{ background: 'rgba(255,34,0,0.18)', boxShadow: '0 0 12px rgba(255,34,0,0.25)' }}>
+            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="#FF2200" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 17h8M4 17l1.5-6h13L20 17M7 11l1-4h8l1 4"/>
             </svg>
           </div>
@@ -213,8 +213,8 @@ export default function Home() {
       {vehicles.length === 0 && (
         <div className="text-center py-16 flex flex-col items-center gap-3">
           <div className="w-16 h-16 rounded-[20px] flex items-center justify-center"
-            style={{ background: 'rgba(193,18,31,0.08)', border: '1px solid rgba(193,18,31,0.15)' }}>
-            <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="rgba(193,18,31,0.5)" strokeWidth={1.5}>
+            style={{ background: 'rgba(255,34,0,0.14)', border: '1px solid rgba(255,34,0,0.3)' }}>
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="rgba(255,60,0,0.8)" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 17h8M4 17l1.5-6h13L20 17M7 11l1-4h8l1 4"/>
             </svg>
           </div>

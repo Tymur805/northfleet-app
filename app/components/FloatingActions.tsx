@@ -27,14 +27,14 @@ const glassBtn = (active: boolean, listening: boolean): React.CSSProperties => (
   width: 64, height: 64, borderRadius: '50%',
   display: 'flex', alignItems: 'center', justifyContent: 'center',
   background: listening
-    ? 'linear-gradient(145deg, rgba(255,60,60,0.38) 0%, rgba(224,0,26,0.18) 55%, rgba(100,0,0,0.25) 100%)'
-    : 'linear-gradient(145deg, rgba(255,30,30,0.28) 0%, rgba(224,0,26,0.12) 55%, rgba(80,0,0,0.18) 100%)',
+    ? 'linear-gradient(145deg, rgba(255,80,60,0.65) 0%, rgba(255,26,0,0.45) 55%, rgba(160,0,0,0.5) 100%)'
+    : 'linear-gradient(145deg, rgba(255,60,30,0.52) 0%, rgba(255,26,0,0.32) 55%, rgba(130,0,0,0.38) 100%)',
   backdropFilter: 'blur(32px) saturate(200%)',
   WebkitBackdropFilter: 'blur(32px) saturate(200%)',
   border: '1px solid rgba(255,80,80,0.22)',
   boxShadow: listening
-    ? '0 0 0 6px rgba(255,26,0,0.1), 0 0 28px rgba(255,26,0,0.6), 0 0 60px rgba(255,26,0,0.2)'
-    : '0 0 22px rgba(255,26,0,0.45), 0 0 50px rgba(255,26,0,0.12), 0 8px 24px rgba(0,0,0,0.35)',
+    ? '0 0 0 8px rgba(255,34,0,0.15), 0 0 36px rgba(255,34,0,0.75), 0 0 70px rgba(255,34,0,0.3)'
+    : '0 0 28px rgba(255,34,0,0.6), 0 0 60px rgba(255,34,0,0.2), 0 8px 24px rgba(0,0,0,0.4)',
   cursor: 'grab',
   touchAction: 'none',
   userSelect: 'none',
@@ -44,13 +44,13 @@ const glassPlusBtn = (open: boolean): React.CSSProperties => ({
   width: 64, height: 64, borderRadius: '50%',
   display: 'flex', alignItems: 'center', justifyContent: 'center',
   background: open
-    ? 'linear-gradient(145deg, rgba(255,30,30,0.28) 0%, rgba(224,0,26,0.12) 55%, rgba(80,0,0,0.18) 100%)'
+    ? 'linear-gradient(145deg, rgba(255,60,30,0.52) 0%, rgba(255,26,0,0.32) 55%, rgba(130,0,0,0.38) 100%)'
     : 'linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.03) 50%, rgba(0,0,0,0.12) 100%)',
   backdropFilter: 'blur(32px) saturate(200%)',
   WebkitBackdropFilter: 'blur(32px) saturate(200%)',
   border: open ? '1px solid rgba(255,80,80,0.22)' : '1px solid rgba(255,255,255,0.15)',
   boxShadow: open
-    ? '0 0 22px rgba(255,26,0,0.5), 0 0 50px rgba(255,26,0,0.15), 0 8px 24px rgba(0,0,0,0.35)'
+    ? '0 0 28px rgba(255,34,0,0.6), 0 0 60px rgba(255,34,0,0.2), 0 8px 24px rgba(0,0,0,0.4)'
     : '0 8px 24px rgba(0,0,0,0.3)',
 })
 
