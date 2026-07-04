@@ -7,12 +7,12 @@ import { usePathname, useRouter } from 'next/navigation'
 type Overlay = { userText?: string; aiText?: string; loading?: boolean; copyText?: string }
 
 const NAV = [
-  { href: '/',            label: 'Home',    icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> },
-  { href: '/vehicles',   label: 'Fleet',   icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M8 17h8M4 17l1.5-6h13L20 17M7 11l1-4h8l1 4"/></svg> },
-  { href: '/trips',      label: 'Trips',   icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> },
-  { href: '/reminders',  label: 'Alerts',  icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg> },
-  { href: '/maintenance',label: 'Service', icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg> },
-  { href: '/finance',    label: 'Finance', icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> },
+  { href: '/',            label: 'Home',    icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#FF2200':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> },
+  { href: '/vehicles',   label: 'Fleet',   icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#FF2200':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M8 17h8M4 17l1.5-6h13L20 17M7 11l1-4h8l1 4"/></svg> },
+  { href: '/trips',      label: 'Trips',   icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#FF2200':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> },
+  { href: '/reminders',  label: 'Alerts',  icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#FF2200':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg> },
+  { href: '/maintenance',label: 'Service', icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#FF2200':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg> },
+  { href: '/finance',    label: 'Finance', icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#FF2200':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> },
 ]
 
 const QUICK = [
@@ -27,14 +27,14 @@ const glassBtn = (active: boolean, listening: boolean): React.CSSProperties => (
   width: 64, height: 64, borderRadius: '50%',
   display: 'flex', alignItems: 'center', justifyContent: 'center',
   background: listening
-    ? 'linear-gradient(145deg, rgba(255,80,80,0.55) 0%, rgba(193,18,31,0.35) 50%, rgba(120,0,0,0.45) 100%)'
-    : 'linear-gradient(145deg, rgba(230,40,40,0.45) 0%, rgba(193,18,31,0.25) 50%, rgba(100,0,0,0.35) 100%)',
-  backdropFilter: 'blur(28px) saturate(180%)',
-  WebkitBackdropFilter: 'blur(28px) saturate(180%)',
-  border: '1px solid rgba(255,150,150,0.25)',
+    ? 'linear-gradient(145deg, rgba(255,60,60,0.38) 0%, rgba(224,0,26,0.18) 55%, rgba(100,0,0,0.25) 100%)'
+    : 'linear-gradient(145deg, rgba(255,30,30,0.28) 0%, rgba(224,0,26,0.12) 55%, rgba(80,0,0,0.18) 100%)',
+  backdropFilter: 'blur(32px) saturate(200%)',
+  WebkitBackdropFilter: 'blur(32px) saturate(200%)',
+  border: '1px solid rgba(255,80,80,0.22)',
   boxShadow: listening
-    ? '0 0 0 6px rgba(255,43,43,0.12), 0 8px 32px rgba(255,43,43,0.35), inset 0 2px 0 rgba(255,255,255,0.55), inset 0 -1px 0 rgba(0,0,0,0.15), inset 1px 0 0 rgba(255,255,255,0.2)'
-    : '0 0 20px rgba(193,18,31,0.3), 0 8px 24px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.12), inset 1px 0 0 rgba(255,255,255,0.18)',
+    ? '0 0 0 6px rgba(255,26,0,0.1), 0 0 28px rgba(255,26,0,0.6), 0 0 60px rgba(255,26,0,0.2), inset 0 2.5px 0 rgba(255,255,255,0.65), inset 0 -1px 0 rgba(0,0,0,0.1), inset 1px 0 0 rgba(255,255,255,0.25)'
+    : '0 0 22px rgba(255,26,0,0.45), 0 0 50px rgba(255,26,0,0.12), 0 8px 24px rgba(0,0,0,0.35), inset 0 2.5px 0 rgba(255,255,255,0.6), inset 0 -1px 0 rgba(0,0,0,0.08), inset 1px 0 0 rgba(255,255,255,0.22)',
   cursor: 'grab',
   touchAction: 'none',
   userSelect: 'none',
@@ -44,14 +44,14 @@ const glassPlusBtn = (open: boolean): React.CSSProperties => ({
   width: 64, height: 64, borderRadius: '50%',
   display: 'flex', alignItems: 'center', justifyContent: 'center',
   background: open
-    ? 'linear-gradient(145deg, rgba(220,30,30,0.45) 0%, rgba(193,18,31,0.25) 50%, rgba(100,0,0,0.35) 100%)'
-    : 'linear-gradient(145deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 50%, rgba(0,0,0,0.15) 100%)',
-  backdropFilter: 'blur(28px) saturate(180%)',
-  WebkitBackdropFilter: 'blur(28px) saturate(180%)',
-  border: open ? '1px solid rgba(255,120,120,0.25)' : '1px solid rgba(255,255,255,0.18)',
+    ? 'linear-gradient(145deg, rgba(255,30,30,0.28) 0%, rgba(224,0,26,0.12) 55%, rgba(80,0,0,0.18) 100%)'
+    : 'linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.03) 50%, rgba(0,0,0,0.12) 100%)',
+  backdropFilter: 'blur(32px) saturate(200%)',
+  WebkitBackdropFilter: 'blur(32px) saturate(200%)',
+  border: open ? '1px solid rgba(255,80,80,0.22)' : '1px solid rgba(255,255,255,0.15)',
   boxShadow: open
-    ? '0 0 24px rgba(193,18,31,0.35), 0 8px 24px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.55), inset 0 -1px 0 rgba(0,0,0,0.12), inset 1px 0 0 rgba(255,255,255,0.2)'
-    : '0 8px 24px rgba(0,0,0,0.35), inset 0 2px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.1), inset 1px 0 0 rgba(255,255,255,0.2)',
+    ? '0 0 22px rgba(255,26,0,0.5), 0 0 50px rgba(255,26,0,0.15), 0 8px 24px rgba(0,0,0,0.35), inset 0 2.5px 0 rgba(255,255,255,0.65), inset 0 -1px 0 rgba(0,0,0,0.08), inset 1px 0 0 rgba(255,255,255,0.25)'
+    : '0 8px 24px rgba(0,0,0,0.3), inset 0 2.5px 0 rgba(255,255,255,0.6), inset 0 -1px 0 rgba(0,0,0,0.08), inset 1px 0 0 rgba(255,255,255,0.22)',
 })
 
 const NAV_H = 100
@@ -238,12 +238,12 @@ export default function FloatingActions() {
               className="pressable flex flex-col items-center justify-center gap-1 rounded-[16px]"
               style={{
                 width: 62, height: 62,
-                background: active ? 'rgba(193,18,31,0.12)' : 'transparent',
-                boxShadow: active ? 'inset 0 1px 0 rgba(255,255,255,0.06)' : 'none',
+                background: active ? 'rgba(255,34,0,0.15)' : 'transparent',
+                boxShadow: active ? '0 0 18px rgba(255,34,0,0.25), inset 0 1px 0 rgba(255,255,255,0.06)' : 'none',
               }}>
               {item.icon(active)}
               {active && (
-                <span className="w-1.5 h-1.5 rounded-full animate-pulse-red" style={{ background: '#E10600' }} />
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse-red" style={{ background: '#FF2200', boxShadow: '0 0 8px rgba(255,34,0,0.9), 0 0 16px rgba(255,34,0,0.5)' }} />
               )}
             </Link>
           )

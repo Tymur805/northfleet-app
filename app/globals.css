@@ -7,9 +7,9 @@
   --s3:        #181818;
   --border:    rgba(255,255,255,0.06);
   --border-hi: rgba(255,255,255,0.11);
-  --accent:    #C1121F;
-  --accent-2:  #E10600;
-  --accent-3:  #FF2B2B;
+  --accent:    #E0001A;
+  --accent-2:  #FF1A00;
+  --accent-3:  #FF3D3D;
   --success:   #34C759;
   --warning:   #FF9F0A;
   --danger:    #FF453A;
@@ -51,7 +51,7 @@ body {
 
 /* ── PRIMARY BUTTON ── */
 .btn-primary {
-  background: linear-gradient(135deg, #C1121F 0%, #E10600 100%);
+  background: linear-gradient(135deg, #E0001A 0%, #FF1A00 100%);
   color: white;
   font-weight: 600;
   border-radius: 999px;
@@ -59,11 +59,11 @@ body {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  box-shadow: 0 0 24px rgba(193,18,31,0.4), 0 4px 12px rgba(0,0,0,0.4);
+  box-shadow: 0 0 28px rgba(255,26,0,0.55), 0 0 12px rgba(224,0,26,0.35), 0 4px 12px rgba(0,0,0,0.4);
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.15s ease;
 }
 .btn-primary:hover {
-  box-shadow: 0 0 32px rgba(193,18,31,0.55), 0 4px 16px rgba(0,0,0,0.4);
+  box-shadow: 0 0 40px rgba(255,26,0,0.7), 0 0 16px rgba(224,0,26,0.5), 0 4px 16px rgba(0,0,0,0.4);
 }
 .btn-primary:active { transform: scale(0.97); opacity: 0.9; }
 .btn-primary:disabled { opacity: 0.45; }
@@ -118,8 +118,8 @@ select.input-dark {
   50%      { opacity: 0.6; transform: scale(1.4); }
 }
 @keyframes pulseRed {
-  0%,100% { box-shadow: 0 0 0 0 rgba(193,18,31,0.4); }
-  50%      { box-shadow: 0 0 0 8px rgba(193,18,31,0); }
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,26,0,0.6); }
+  50%      { box-shadow: 0 0 0 10px rgba(255,26,0,0); }
 }
 @keyframes shimmer {
   from { background-position: -200% 0; }
@@ -172,7 +172,7 @@ select.input-dark {
 
 /* ── RED GLOW UTILITY ── */
 .red-glow {
-  box-shadow: 0 0 24px rgba(193,18,31,0.35), 0 4px 16px rgba(0,0,0,0.4);
+  box-shadow: 0 0 32px rgba(255,26,0,0.5), 0 0 12px rgba(224,0,26,0.3), 0 4px 16px rgba(0,0,0,0.4);
 }
 
 /* ── SECTION LABEL ── */
