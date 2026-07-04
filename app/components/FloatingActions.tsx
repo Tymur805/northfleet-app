@@ -27,14 +27,14 @@ const glassBtn = (active: boolean, listening: boolean): React.CSSProperties => (
   width: 64, height: 64, borderRadius: '50%',
   display: 'flex', alignItems: 'center', justifyContent: 'center',
   background: listening
-    ? 'linear-gradient(160deg, rgba(255,80,80,0.95) 0%, rgba(193,18,31,0.85) 60%, rgba(150,0,0,0.9) 100%)'
-    : 'linear-gradient(160deg, rgba(220,30,30,0.95) 0%, rgba(193,18,31,0.85) 50%, rgba(130,0,0,0.9) 100%)',
-  backdropFilter: 'blur(20px)',
-  WebkitBackdropFilter: 'blur(20px)',
-  border: '1px solid rgba(255,120,120,0.35)',
+    ? 'linear-gradient(145deg, rgba(255,80,80,0.55) 0%, rgba(193,18,31,0.35) 50%, rgba(120,0,0,0.45) 100%)'
+    : 'linear-gradient(145deg, rgba(230,40,40,0.45) 0%, rgba(193,18,31,0.25) 50%, rgba(100,0,0,0.35) 100%)',
+  backdropFilter: 'blur(28px) saturate(180%)',
+  WebkitBackdropFilter: 'blur(28px) saturate(180%)',
+  border: '1px solid rgba(255,150,150,0.25)',
   boxShadow: listening
-    ? '0 0 0 6px rgba(255,43,43,0.15), 0 8px 32px rgba(255,43,43,0.45), inset 0 1px 0 rgba(255,255,255,0.3), inset 0 -1px 0 rgba(0,0,0,0.25)'
-    : '0 0 24px rgba(193,18,31,0.5), 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(0,0,0,0.2)',
+    ? '0 0 0 6px rgba(255,43,43,0.12), 0 8px 32px rgba(255,43,43,0.35), inset 0 2px 0 rgba(255,255,255,0.55), inset 0 -1px 0 rgba(0,0,0,0.15), inset 1px 0 0 rgba(255,255,255,0.2)'
+    : '0 0 20px rgba(193,18,31,0.3), 0 8px 24px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.12), inset 1px 0 0 rgba(255,255,255,0.18)',
   cursor: 'grab',
   touchAction: 'none',
   userSelect: 'none',
@@ -44,14 +44,14 @@ const glassPlusBtn = (open: boolean): React.CSSProperties => ({
   width: 64, height: 64, borderRadius: '50%',
   display: 'flex', alignItems: 'center', justifyContent: 'center',
   background: open
-    ? 'linear-gradient(160deg, rgba(220,30,30,0.95) 0%, rgba(193,18,31,0.85) 50%, rgba(130,0,0,0.9) 100%)'
-    : 'linear-gradient(160deg, rgba(40,40,40,0.98) 0%, rgba(22,22,22,0.95) 50%, rgba(10,10,10,0.98) 100%)',
-  backdropFilter: 'blur(20px)',
-  WebkitBackdropFilter: 'blur(20px)',
-  border: open ? '1px solid rgba(255,120,120,0.35)' : '1px solid rgba(255,255,255,0.12)',
+    ? 'linear-gradient(145deg, rgba(220,30,30,0.45) 0%, rgba(193,18,31,0.25) 50%, rgba(100,0,0,0.35) 100%)'
+    : 'linear-gradient(145deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 50%, rgba(0,0,0,0.15) 100%)',
+  backdropFilter: 'blur(28px) saturate(180%)',
+  WebkitBackdropFilter: 'blur(28px) saturate(180%)',
+  border: open ? '1px solid rgba(255,120,120,0.25)' : '1px solid rgba(255,255,255,0.18)',
   boxShadow: open
-    ? '0 0 28px rgba(193,18,31,0.55), 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(0,0,0,0.2)'
-    : '0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.3)',
+    ? '0 0 24px rgba(193,18,31,0.35), 0 8px 24px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.55), inset 0 -1px 0 rgba(0,0,0,0.12), inset 1px 0 0 rgba(255,255,255,0.2)'
+    : '0 8px 24px rgba(0,0,0,0.35), inset 0 2px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.1), inset 1px 0 0 rgba(255,255,255,0.2)',
 })
 
 const NAV_H = 100
