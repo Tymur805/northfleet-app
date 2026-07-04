@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import VoiceFill from '../../../components/VoiceFill'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -32,6 +33,18 @@ export default function NewExpense() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
+  function handleVoiceFill(fields: Record<string, string>) {
+    setForm(f => ({
+      ...f,
+      ...(fields.category    ? { category:    fields.category }    : {}),
+      ...(fields.description ? { description: fields.description } : {}),
+      ...(fields.amount      ? { amount:      fields.amount }      : {}),
+      ...(fields.date        ? { date:        fields.date }        : {}),
+      ...(fields.vendor      ? { vendor:      fields.vendor }      : {}),
+      ...(fields.vehicle_id  ? { vehicle_id:  fields.vehicle_id }  : {}),
+    }))
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
@@ -45,7 +58,7 @@ export default function NewExpense() {
   }
 
   return (
-    <div className="flex flex-col gap-6 pt-1 animate-fade-up">
+    <div className="flex flex-col gap-5 pt-1 animate-fade-up">
       <div className="flex items-center gap-3">
         <Link href="/finance" className="pressable w-9 h-9 rounded-full flex items-center justify-center"
           style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
@@ -56,24 +69,24 @@ export default function NewExpense() {
         <h1 className="text-[20px] font-bold text-white">Add Expense</h1>
       </div>
 
+      <VoiceFill formType="expense" vehicles={vehicles} onFill={handleVoiceFill} />
+
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <div className="flex flex-col gap-1.5">
           <label className="text-[12px] font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.35)' }}>
             Vehicle <span style={{ color: 'rgba(255,255,255,0.2)' }}>(optional)</span>
           </label>
           <select name="vehicle_id" value={form.vehicle_id} onChange={handleChange} className="input-dark">
-            <option value="">No specific vehicle (overhead)</option>
-            {vehicles.map(v => <option key={v.id} value={v.id}>{v.year} {v.make} {v.model}</option>)}
+            <option value="">No specific vehicle</option>
+            {vehicles.map(v => <option key={v.id} value={v.id}>{v.year} {v.make} {v.model}{v.nickname ? ` (${v.nickname})` : ''}</option>)}
           </select>
         </div>
-
         <div className="flex flex-col gap-1.5">
           <label className="text-[12px] font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.35)' }}>Category</label>
           <select name="category" value={form.category} onChange={handleChange} className="input-dark">
             {categories.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
-
         {[
           { label: 'Description', name: 'description', type: 'text',   placeholder: 'e.g. Oil change at Jiffy Lube', required: true },
           { label: 'Amount (CAD)',name: 'amount',      type: 'number', placeholder: '89.99',                        required: true },
@@ -93,7 +106,6 @@ export default function NewExpense() {
             />
           </div>
         ))}
-
         <button type="submit" disabled={loading} className="btn-primary py-4 text-[15px] mt-2">
           {loading ? 'Saving…' : 'Add Expense'}
         </button>

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import VoiceFill from '../components/VoiceFill'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -19,6 +20,10 @@ export default function NewVehicle() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
+  function handleVoiceFill(fields: Record<string, string>) {
+    setForm(f => ({ ...f, ...Object.fromEntries(Object.entries(fields).filter(([k]) => k in f && fields[k])) }))
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
@@ -28,16 +33,16 @@ export default function NewVehicle() {
   }
 
   const fields = [
-    { label: 'Nickname', name: 'nickname', placeholder: 'e.g. Milano', required: false },
-    { label: 'Make', name: 'make', placeholder: 'Hyundai', required: true },
-    { label: 'Model', name: 'model', placeholder: 'Elantra', required: true },
-    { label: 'Year', name: 'year', placeholder: '2022', required: true },
-    { label: 'Color', name: 'color', placeholder: 'White', required: true },
-    { label: 'License Plate', name: 'license_plate', placeholder: 'ABCD 123', required: true },
+    { label: 'Nickname',      name: 'nickname',      placeholder: 'e.g. Milano',  required: false },
+    { label: 'Make',          name: 'make',          placeholder: 'Toyota',        required: true },
+    { label: 'Model',         name: 'model',         placeholder: 'Camry',         required: true },
+    { label: 'Year',          name: 'year',          placeholder: '2022',          required: true },
+    { label: 'Color',         name: 'color',         placeholder: 'White',         required: true },
+    { label: 'License Plate', name: 'license_plate', placeholder: 'ABCD 123',      required: true },
   ]
 
   return (
-    <div className="flex flex-col gap-6 pt-1 animate-fade-up">
+    <div className="flex flex-col gap-5 pt-1 animate-fade-up">
       <div className="flex items-center gap-3">
         <Link href="/vehicles" className="pressable w-9 h-9 rounded-full flex items-center justify-center"
           style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
@@ -47,6 +52,8 @@ export default function NewVehicle() {
         </Link>
         <h1 className="text-[20px] font-bold text-white">Add Vehicle</h1>
       </div>
+
+      <VoiceFill formType="vehicle" onFill={handleVoiceFill} />
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         {fields.map(field => (
@@ -64,7 +71,6 @@ export default function NewVehicle() {
             />
           </div>
         ))}
-
         <button type="submit" disabled={loading} className="btn-primary py-4 text-[15px] mt-2">
           {loading ? 'Saving…' : 'Add Vehicle'}
         </button>

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import VoiceFill from '../components/VoiceFill'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -27,6 +28,17 @@ export default function NewTrip() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
+  function handleVoiceFill(fields: Record<string, string>) {
+    setForm(f => ({
+      ...f,
+      ...(fields.customer_name ? { customer_name: fields.customer_name } : {}),
+      ...(fields.start_date    ? { start_date:    fields.start_date }    : {}),
+      ...(fields.end_date      ? { end_date:      fields.end_date }      : {}),
+      ...(fields.earnings      ? { earnings:      fields.earnings }      : {}),
+      ...(fields.vehicle_id    ? { vehicle_id:    fields.vehicle_id }    : {}),
+    }))
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
@@ -40,7 +52,7 @@ export default function NewTrip() {
   }
 
   return (
-    <div className="flex flex-col gap-6 pt-1 animate-fade-up">
+    <div className="flex flex-col gap-5 pt-1 animate-fade-up">
       <div className="flex items-center gap-3">
         <Link href="/trips" className="pressable w-9 h-9 rounded-full flex items-center justify-center"
           style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
@@ -51,16 +63,17 @@ export default function NewTrip() {
         <h1 className="text-[20px] font-bold text-white">Log Trip</h1>
       </div>
 
+      <VoiceFill formType="trip" vehicles={vehicles} onFill={handleVoiceFill} />
+
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <div className="flex flex-col gap-1.5">
           <label className="text-[12px] font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.35)' }}>Vehicle</label>
           <select name="vehicle_id" value={form.vehicle_id} onChange={handleChange} required className="input-dark">
             {vehicles.map(v => (
-              <option key={v.id} value={v.id}>{v.year} {v.make} {v.model}</option>
+              <option key={v.id} value={v.id}>{v.year} {v.make} {v.model}{v.nickname ? ` (${v.nickname})` : ''}</option>
             ))}
           </select>
         </div>
-
         {[
           { label: 'Customer Name', name: 'customer_name', placeholder: 'John Smith',  type: 'text' },
           { label: 'Start Date',    name: 'start_date',    placeholder: '',            type: 'date' },
@@ -77,7 +90,6 @@ export default function NewTrip() {
             />
           </div>
         ))}
-
         <button type="submit" disabled={loading} className="btn-primary py-4 text-[15px] mt-2">
           {loading ? 'Saving…' : 'Log Trip'}
         </button>

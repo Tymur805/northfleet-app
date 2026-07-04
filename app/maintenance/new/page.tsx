@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import VoiceFill from '../components/VoiceFill'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -33,6 +34,18 @@ export default function NewMaintenance() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
+  function handleVoiceFill(fields: Record<string, string>) {
+    setForm(f => ({
+      ...f,
+      ...(fields.type        ? { type:        fields.type }        : {}),
+      ...(fields.date        ? { date:        fields.date }        : {}),
+      ...(fields.mileage_km  ? { mileage_km:  fields.mileage_km }  : {}),
+      ...(fields.cost        ? { cost:        fields.cost }        : {}),
+      ...(fields.notes       ? { notes:       fields.notes }       : {}),
+      ...(fields.vehicle_id  ? { vehicle_id:  fields.vehicle_id }  : {}),
+    }))
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
@@ -46,7 +59,7 @@ export default function NewMaintenance() {
   }
 
   return (
-    <div className="flex flex-col gap-6 pt-1 animate-fade-up">
+    <div className="flex flex-col gap-5 pt-1 animate-fade-up">
       <div className="flex items-center gap-3">
         <Link href="/maintenance" className="pressable w-9 h-9 rounded-full flex items-center justify-center"
           style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
@@ -57,21 +70,21 @@ export default function NewMaintenance() {
         <h1 className="text-[20px] font-bold text-white">Log Service</h1>
       </div>
 
+      <VoiceFill formType="maintenance" vehicles={vehicles} onFill={handleVoiceFill} />
+
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <div className="flex flex-col gap-1.5">
           <label className="text-[12px] font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.35)' }}>Vehicle</label>
           <select name="vehicle_id" value={form.vehicle_id} onChange={handleChange} required className="input-dark">
-            {vehicles.map(v => <option key={v.id} value={v.id}>{v.year} {v.make} {v.model}</option>)}
+            {vehicles.map(v => <option key={v.id} value={v.id}>{v.year} {v.make} {v.model}{v.nickname ? ` (${v.nickname})` : ''}</option>)}
           </select>
         </div>
-
         <div className="flex flex-col gap-1.5">
           <label className="text-[12px] font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.35)' }}>Service Type</label>
           <select name="type" value={form.type} onChange={handleChange} className="input-dark">
             {maintenanceTypes.map(t => <option key={t} value={t}>{t}</option>)}
           </select>
         </div>
-
         {[
           { label: 'Date',        name: 'date',       type: 'date',   placeholder: '' },
           { label: 'Mileage (km)',name: 'mileage_km', type: 'number', placeholder: '45000' },
@@ -87,19 +100,14 @@ export default function NewMaintenance() {
             />
           </div>
         ))}
-
         <div className="flex flex-col gap-1.5">
           <label className="text-[12px] font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.35)' }}>
             Notes <span style={{ color: 'rgba(255,255,255,0.2)' }}>(optional)</span>
           </label>
-          <textarea
-            name="notes" value={form.notes} onChange={handleChange}
+          <textarea name="notes" value={form.notes} onChange={handleChange}
             placeholder="e.g. Used Mobil 1 5W-30" rows={2}
-            className="input-dark resize-none"
-            style={{ borderRadius: 14, padding: '14px 16px' }}
-          />
+            className="input-dark resize-none" style={{ borderRadius: 14, padding: '14px 16px' }} />
         </div>
-
         <button type="submit" disabled={loading} className="btn-primary py-4 text-[15px] mt-2">
           {loading ? 'Saving…' : 'Log Service'}
         </button>
