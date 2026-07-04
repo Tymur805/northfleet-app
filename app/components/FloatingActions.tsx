@@ -7,12 +7,12 @@ import { usePathname, useRouter } from 'next/navigation'
 type Overlay = { userText?: string; aiText?: string; loading?: boolean; copyText?: string }
 
 const NAV = [
-  { href: '/',            label: 'Home',    icon: (a:boolean) => <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> },
-  { href: '/vehicles',   label: 'Fleet',   icon: (a:boolean) => <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M8 17h8M4 17l1.5-6h13L20 17M7 11l1-4h8l1 4"/></svg> },
-  { href: '/trips',      label: 'Trips',   icon: (a:boolean) => <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> },
-  { href: '/reminders',  label: 'Alerts',  icon: (a:boolean) => <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg> },
-  { href: '/maintenance',label: 'Service', icon: (a:boolean) => <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg> },
-  { href: '/finance',    label: 'Finance', icon: (a:boolean) => <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> },
+  { href: '/',            label: 'Home',    icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> },
+  { href: '/vehicles',   label: 'Fleet',   icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M8 17h8M4 17l1.5-6h13L20 17M7 11l1-4h8l1 4"/></svg> },
+  { href: '/trips',      label: 'Trips',   icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> },
+  { href: '/reminders',  label: 'Alerts',  icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg> },
+  { href: '/maintenance',label: 'Service', icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg> },
+  { href: '/finance',    label: 'Finance', icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#E10600':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> },
 ]
 
 const QUICK = [
@@ -54,7 +54,7 @@ const glassPlusBtn = (open: boolean): React.CSSProperties => ({
     : '0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.3)',
 })
 
-const NAV_H = 82
+const NAV_H = 100
 
 export default function FloatingActions() {
   const pathname = usePathname()
@@ -237,7 +237,7 @@ export default function FloatingActions() {
             <Link key={item.href} href={item.href}
               className="pressable flex flex-col items-center justify-center gap-1 rounded-[16px]"
               style={{
-                width: 52, height: 52,
+                width: 62, height: 62,
                 background: active ? 'rgba(193,18,31,0.12)' : 'transparent',
                 boxShadow: active ? 'inset 0 1px 0 rgba(255,255,255,0.06)' : 'none',
               }}>

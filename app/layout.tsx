@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${geist.className} h-full`} style={{ background: '#090909', color: '#fff' }}>
         <div className="flex flex-col min-h-screen max-w-xl mx-auto relative">
           <Header />
-          <main className="flex-1 px-4 pb-32 overflow-y-auto">
+          <main className="flex-1 px-4 pb-40 overflow-y-auto">
             {children}
           </main>
           <FloatingActions />
