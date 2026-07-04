@@ -33,8 +33,8 @@ const glassBtn = (active: boolean, listening: boolean): React.CSSProperties => (
   WebkitBackdropFilter: 'blur(32px) saturate(200%)',
   border: '1px solid rgba(255,80,80,0.22)',
   boxShadow: listening
-    ? '0 0 0 6px rgba(255,26,0,0.1), 0 0 28px rgba(255,26,0,0.6), 0 0 60px rgba(255,26,0,0.2), inset 0 2.5px 0 rgba(255,255,255,0.65), inset 0 -1px 0 rgba(0,0,0,0.1), inset 1px 0 0 rgba(255,255,255,0.25)'
-    : '0 0 22px rgba(255,26,0,0.45), 0 0 50px rgba(255,26,0,0.12), 0 8px 24px rgba(0,0,0,0.35), inset 0 2.5px 0 rgba(255,255,255,0.6), inset 0 -1px 0 rgba(0,0,0,0.08), inset 1px 0 0 rgba(255,255,255,0.22)',
+    ? '0 0 0 6px rgba(255,26,0,0.1), 0 0 28px rgba(255,26,0,0.6), 0 0 60px rgba(255,26,0,0.2)'
+    : '0 0 22px rgba(255,26,0,0.45), 0 0 50px rgba(255,26,0,0.12), 0 8px 24px rgba(0,0,0,0.35)',
   cursor: 'grab',
   touchAction: 'none',
   userSelect: 'none',
@@ -50,8 +50,8 @@ const glassPlusBtn = (open: boolean): React.CSSProperties => ({
   WebkitBackdropFilter: 'blur(32px) saturate(200%)',
   border: open ? '1px solid rgba(255,80,80,0.22)' : '1px solid rgba(255,255,255,0.15)',
   boxShadow: open
-    ? '0 0 22px rgba(255,26,0,0.5), 0 0 50px rgba(255,26,0,0.15), 0 8px 24px rgba(0,0,0,0.35), inset 0 2.5px 0 rgba(255,255,255,0.65), inset 0 -1px 0 rgba(0,0,0,0.08), inset 1px 0 0 rgba(255,255,255,0.25)'
-    : '0 8px 24px rgba(0,0,0,0.3), inset 0 2.5px 0 rgba(255,255,255,0.6), inset 0 -1px 0 rgba(0,0,0,0.08), inset 1px 0 0 rgba(255,255,255,0.22)',
+    ? '0 0 22px rgba(255,26,0,0.5), 0 0 50px rgba(255,26,0,0.15), 0 8px 24px rgba(0,0,0,0.35)'
+    : '0 8px 24px rgba(0,0,0,0.3)',
 })
 
 const NAV_H = 100
