@@ -64,8 +64,8 @@ export default function FinancePage() {
           </div>
           <div className="w-px h-8" style={{ background: 'rgba(255,255,255,0.07)' }} />
           <div>
-            <p className="section-label" style={{ marginTop: 0, color: 'rgba(193,18,31,0.6)' }}>Expenses</p>
-            <p className="text-[14px] font-bold mt-1 tabular-nums" style={{ color: '#E10600' }}>${totalExpenses.toLocaleString()}</p>
+            <p className="section-label" style={{ marginTop: 0, color: 'rgba(255,34,0,0.7)' }}>Expenses</p>
+            <p className="text-[14px] font-bold mt-1 tabular-nums" style={{ color: '#FF2200' }}>${totalExpenses.toLocaleString()}</p>
           </div>
           <div className="w-px h-8" style={{ background: 'rgba(255,255,255,0.07)' }} />
           <div>

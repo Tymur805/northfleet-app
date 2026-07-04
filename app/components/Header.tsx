@@ -12,14 +12,14 @@ export default function Header() {
       <header className="flex items-center justify-between px-4 pt-5 pb-2">
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-[10px] flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #C1121F 0%, #E10600 100%)', boxShadow: '0 0 14px rgba(193,18,31,0.45)' }}>
+            style={{ background: 'linear-gradient(135deg, #E0001A 0%, #FF2200 100%)', boxShadow: '0 0 18px rgba(255,34,0,0.55)' }}>
             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 17h8M4 17l1.5-6h13L20 17M7 11l1-4h8l1 4"/>
             </svg>
           </div>
           <span className="text-[14px] font-bold tracking-tight text-white">NorthFleet</span>
           <span className="text-[10px] px-1.5 py-0.5 rounded-md font-semibold tracking-wide"
-            style={{ background: 'rgba(193,18,31,0.12)', color: 'rgba(193,18,31,0.7)', border: '1px solid rgba(193,18,31,0.2)' }}>
+            style={{ background: 'rgba(255,34,0,0.14)', color: 'rgba(255,60,0,0.85)', border: '1px solid rgba(255,34,0,0.25)' }}>
             PRO
           </span>
         </div>
@@ -70,7 +70,7 @@ export default function Header() {
             <div className="mx-4 mb-3 rounded-[20px] p-4 flex items-center gap-3"
               style={{ background: '#181818', border: '1px solid rgba(255,255,255,0.07)' }}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
-                style={{ background: 'linear-gradient(135deg, #C1121F, #E10600)', boxShadow: '0 0 18px rgba(193,18,31,0.4)' }}>
+                style={{ background: 'linear-gradient(135deg, #E0001A, #FF2200)', boxShadow: '0 0 22px rgba(255,34,0,0.5)' }}>
                 <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={1.8}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 type Reminder = { id: string; title: string; due_date: string; vehicle?: string; done: boolean }
 
@@ -56,9 +57,17 @@ export default function RemindersPage() {
 
   return (
     <div className="flex flex-col gap-3 pt-1 animate-fade-up">
-      <div className="mb-1">
-        <h1 className="text-[17px] font-bold text-white">Reminders</h1>
-        <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.25)' }}>Say "Remind me to check tires on BMW tomorrow"</p>
+      <div className="flex items-center justify-between mb-1">
+        <div>
+          <h1 className="text-[17px] font-bold text-white">Reminders</h1>
+          <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.25)' }}>Or say "Remind me to check tires on BMW"</p>
+        </div>
+        <Link href="/reminders/new" className="btn-primary h-9 px-4 text-[13px]">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          Add
+        </Link>
       </div>
 
       {/* Auto-reminders from trips */}
@@ -85,13 +94,13 @@ export default function RemindersPage() {
             const vLabel = v ? (v.nickname || `${v.year} ${v.make} ${v.model}`) : `Vehicle #${t.vehicle_id}`
             return (
               <div key={`pickup-${t.id}`} className="pressable rounded-[20px] p-4 flex items-center justify-between"
-                style={{ background: 'rgba(193,18,31,0.06)', border: '1px solid rgba(193,18,31,0.18)' }}>
+                style={{ background: 'rgba(255,34,0,0.06)', border: '1px solid rgba(255,34,0,0.2)' }}>
                 <div>
                   <p className="font-semibold text-[13px] text-white">Pickup: {vLabel}</p>
                   <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>For {t.customer_name}</p>
                 </div>
                 <span className="text-[11px] font-bold px-2.5 py-1 rounded-full ml-2 shrink-0"
-                  style={{ background: 'rgba(193,18,31,0.12)', color: '#E10600' }}>{daysLabel(t.start_date)}</span>
+                  style={{ background: 'rgba(255,34,0,0.14)', color: '#FF2200' }}>{daysLabel(t.start_date)}</span>
               </div>
             )
           })}
@@ -106,10 +115,10 @@ export default function RemindersPage() {
               style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.06)' }}>
               <button onClick={() => toggle(r.id)}
                 className="w-5 h-5 rounded-full shrink-0 transition-all"
-                style={{ border: '2px solid rgba(193,18,31,0.4)' }} />
+                style={{ border: '2px solid rgba(255,34,0,0.45)' }} />
               <div className="flex-1">
                 <p className="font-semibold text-[13px] text-white">{r.title}</p>
-                {r.vehicle && <p className="text-[11px] mt-0.5" style={{ color: '#E10600' }}>{r.vehicle}</p>}
+                {r.vehicle && <p className="text-[11px] mt-0.5" style={{ color: '#FF2200' }}>{r.vehicle}</p>}
                 <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.28)' }}>{daysLabel(r.due_date)} · {r.due_date}</p>
               </div>
               <button onClick={() => remove(r.id)} className="pressable shrink-0 w-7 h-7 flex items-center justify-center rounded-full"
@@ -149,8 +158,8 @@ export default function RemindersPage() {
       {!loading && activeReminders.length === 0 && upcomingReturns.length === 0 && upcomingPickups.length === 0 && (
         <div className="text-center py-16 flex flex-col items-center gap-3">
           <div className="w-16 h-16 rounded-[20px] flex items-center justify-center"
-            style={{ background: 'rgba(193,18,31,0.06)', border: '1px solid rgba(193,18,31,0.12)' }}>
-            <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="rgba(193,18,31,0.4)" strokeWidth={1.5}>
+            style={{ background: 'rgba(255,34,0,0.06)', border: '1px solid rgba(255,34,0,0.14)' }}>
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="rgba(255,34,0,0.5)" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
             </svg>
           </div>

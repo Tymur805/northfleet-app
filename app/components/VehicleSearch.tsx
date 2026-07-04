@@ -70,7 +70,7 @@ export default function VehicleSearch({ vehicles }: { vehicles: Vehicle[] }) {
                 background: v.utilization30 >= 70
                   ? '#34C759'
                   : v.utilization30 >= 40
-                  ? '#E10600'
+                  ? '#FF2200'
                   : 'rgba(255,255,255,0.15)'
               }} />
             </div>

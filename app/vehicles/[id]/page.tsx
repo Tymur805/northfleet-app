@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 const typeColors: Record<string, string> = {
   'Oil Change':  '#FF9F0A',
-  'Tire Change': '#C1121F',
+  'Tire Change': '#FF2200',
   'Brake Pads':  '#FF453A',
   'Inspection':  '#34C759',
   'Battery':     '#BF5AF2',
@@ -64,7 +64,7 @@ export default function VehicleDetailPage() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </Link>
-        <div>
+        <div className="flex-1">
           <h1 className="text-[17px] font-bold text-white leading-tight">
             {vehicle.nickname || `${vehicle.year} ${vehicle.make} ${vehicle.model}`}
           </h1>
@@ -72,6 +72,13 @@ export default function VehicleDetailPage() {
             <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.35)' }}>{vehicle.year} {vehicle.make} {vehicle.model}</p>
           )}
         </div>
+        <Link href={`/vehicles/${id}/edit`} className="pressable h-8 px-3 rounded-full flex items-center gap-1.5 text-[12px] font-semibold"
+          style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)' }}>
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+          </svg>
+          Edit
+        </Link>
       </div>
 
       {/* Status card */}

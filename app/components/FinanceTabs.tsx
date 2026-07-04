@@ -37,7 +37,7 @@ function MonthlyChart({ trips, expenses }: { trips: Trip[]; expenses: Expense[] 
               <div className="flex-1 rounded-t chart-bar"
                 style={{ height: `${(d.income / maxVal) * 100}%`, minHeight: d.income > 0 ? 2 : 0, background: 'linear-gradient(to top, #34C759, #30D158)', opacity: 0.8, animationDelay: `${i*60}ms` }} />
               <div className="flex-1 rounded-t chart-bar"
-                style={{ height: `${(d.expenses / maxVal) * 100}%`, minHeight: d.expenses > 0 ? 2 : 0, background: 'linear-gradient(to top, #C1121F, #E10600)', opacity: 0.7, animationDelay: `${i*60+30}ms` }} />
+                style={{ height: `${(d.expenses / maxVal) * 100}%`, minHeight: d.expenses > 0 ? 2 : 0, background: 'linear-gradient(to top, #E0001A, #FF2200)', opacity: 0.7, animationDelay: `${i*60+30}ms` }} />
             </div>
             <span className="text-[9px]" style={{ color: 'rgba(255,255,255,0.3)' }}>{d.label}</span>
           </div>
@@ -49,7 +49,7 @@ function MonthlyChart({ trips, expenses }: { trips: Trip[]; expenses: Expense[] 
           <span className="text-[10px]" style={{ color: 'rgba(255,255,255,0.4)' }}>Income</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-2 h-2 rounded-sm" style={{ background: '#E10600' }} />
+          <div className="w-2 h-2 rounded-sm" style={{ background: '#FF2200' }} />
           <span className="text-[10px]" style={{ color: 'rgba(255,255,255,0.4)' }}>Expenses</span>
         </div>
       </div>
@@ -91,7 +91,7 @@ export default function FinanceTabs({ trips, expenses, vehicles }: { trips: Trip
           <button key={p} onClick={() => setPeriod(p)}
             className="pressable shrink-0 px-3.5 py-1.5 rounded-full text-[12px] font-semibold transition-all"
             style={period === p
-              ? { background: 'linear-gradient(135deg, #C1121F, #E10600)', color: 'white', boxShadow: '0 0 16px rgba(193,18,31,0.35)' }
+              ? { background: 'linear-gradient(135deg, #E0001A, #FF2200)', color: 'white', boxShadow: '0 0 20px rgba(255,34,0,0.45)' }
               : { background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.45)' }}>
             {p}
           </button>
@@ -120,9 +120,9 @@ export default function FinanceTabs({ trips, expenses, vehicles }: { trips: Trip
               <p className="text-[17px] font-bold mt-1 tabular-nums" style={{ color: '#34C759' }}>${periodIncome.toLocaleString()}</p>
               <p className="text-[10px] mt-0.5" style={{ color: 'rgba(255,255,255,0.2)' }}>{filteredTrips.length} trips</p>
             </div>
-            <div className="rounded-[20px] p-3.5" style={{ background: 'rgba(193,18,31,0.06)', border: '1px solid rgba(193,18,31,0.18)' }}>
-              <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: 'rgba(193,18,31,0.7)' }}>Expenses</p>
-              <p className="text-[17px] font-bold mt-1 tabular-nums" style={{ color: '#E10600' }}>${periodExpenses.toLocaleString()}</p>
+            <div className="rounded-[20px] p-3.5" style={{ background: 'rgba(255,34,0,0.06)', border: '1px solid rgba(255,34,0,0.2)' }}>
+              <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: 'rgba(255,34,0,0.8)' }}>Expenses</p>
+              <p className="text-[17px] font-bold mt-1 tabular-nums" style={{ color: '#FF2200' }}>${periodExpenses.toLocaleString()}</p>
               <p className="text-[10px] mt-0.5" style={{ color: 'rgba(255,255,255,0.2)' }}>{filteredExpenses.length} items</p>
             </div>
             <div className="rounded-[20px] p-3.5" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.07)' }}>
@@ -154,7 +154,7 @@ export default function FinanceTabs({ trips, expenses, vehicles }: { trips: Trip
         <div className="flex flex-col gap-2 animate-fade-up">
           <Link href="/finance/expenses/new"
             className="pressable flex items-center justify-center gap-2 rounded-[20px] py-3.5 text-[13px] font-semibold"
-            style={{ border: '1px dashed rgba(193,18,31,0.25)', color: 'rgba(193,18,31,0.7)' }}>
+            style={{ border: '1px dashed rgba(255,34,0,0.3)', color: 'rgba(255,34,0,0.8)' }}>
             <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
             Add Expense
           </Link>
@@ -169,7 +169,7 @@ export default function FinanceTabs({ trips, expenses, vehicles }: { trips: Trip
                       <span className="text-[12px] tabular-nums" style={{ color: 'rgba(255,255,255,0.45)' }}>${amount.toLocaleString()}</span>
                     </div>
                     <div className="h-0.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                      <div className="h-full rounded-full" style={{ width: `${(amount / totalExpCat) * 100}%`, background: 'linear-gradient(to right, #C1121F, #E10600)', opacity: 0.8 }} />
+                      <div className="h-full rounded-full" style={{ width: `${(amount / totalExpCat) * 100}%`, background: 'linear-gradient(to right, #E0001A, #FF2200)', opacity: 0.8 }} />
                     </div>
                   </div>
                 ))}
@@ -183,7 +183,7 @@ export default function FinanceTabs({ trips, expenses, vehicles }: { trips: Trip
                 <p className="font-semibold text-[13px] text-white">{e.description || e.category}</p>
                 <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>{e.category} · {e.date}</p>
               </div>
-              <p className="font-bold text-[13px]" style={{ color: '#E10600' }}>-${Number(e.amount).toLocaleString()}</p>
+              <p className="font-bold text-[13px]" style={{ color: '#FF2200' }}>-${Number(e.amount).toLocaleString()}</p>
             </div>
           ))}
           {filteredExpenses.length === 0 && <p className="text-center py-12 text-sm" style={{ color: 'rgba(255,255,255,0.2)' }}>No expenses for this period.</p>}
@@ -206,7 +206,7 @@ export default function FinanceTabs({ trips, expenses, vehicles }: { trips: Trip
                   </div>
                   <div>
                     <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: 'rgba(255,255,255,0.3)' }}>Expenses</p>
-                    <p className="text-[13px] font-bold mt-0.5 tabular-nums" style={{ color: '#E10600' }}>${spent.toLocaleString()}</p>
+                    <p className="text-[13px] font-bold mt-0.5 tabular-nums" style={{ color: '#FF2200' }}>${spent.toLocaleString()}</p>
                   </div>
                   <div>
                     <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: 'rgba(255,255,255,0.3)' }}>Profit</p>

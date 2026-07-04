@@ -50,7 +50,7 @@ export default function TripsTabs({ trips, vehicles = [] }: { trips: Trip[], veh
                 {active && <span className="w-2 h-2 rounded-full animate-pulse-dot shrink-0" style={{ background: '#34C759' }} />}
                 <div>
                   <p className="font-semibold text-[13px] text-white">{trip.customer_name}</p>
-                  <p className="text-[11px] mt-0.5" style={{ color: 'rgba(193,18,31,0.8)' }}>{vehicleLabel}</p>
+                  <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,34,0,0.85)' }}>{vehicleLabel}</p>
                   <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.28)' }}>
                     {trip.start_date} → {trip.end_date} · {days}d
                   </p>
@@ -62,7 +62,7 @@ export default function TripsTabs({ trips, vehicles = [] }: { trips: Trip[], veh
                   style={active
                     ? { background: 'rgba(52,199,89,0.12)', color: '#34C759' }
                     : tab === 'booked'
-                    ? { background: 'rgba(193,18,31,0.1)', color: '#E10600' }
+                    ? { background: 'rgba(255,34,0,0.12)', color: '#FF2200' }
                     : { background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.35)' }}>
                   {active ? 'Active' : tab === 'booked' ? 'Upcoming' : 'Done'}
                 </span>

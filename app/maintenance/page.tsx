@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 const typeColors: Record<string, string> = {
   'Oil Change':  '#FF9F0A',
-  'Tire Change': '#C1121F',
+  'Tire Change': '#FF2200',
   'Brake Pads':  '#FF453A',
   'Inspection':  '#34C759',
   'Battery':     '#BF5AF2',
