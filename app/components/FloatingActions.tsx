@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
-type Overlay = { userText?: string; aiText?: string; loading?: boolean; copyText?: string }
+type Overlay = { userText?: string; aiText?: string; loading?: boolean; copyText?: string; debug?: string[] }
 
 const NAV = [
   { href: '/',            label: 'Home',    icon: (a:boolean) => <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke={a?'#FF2200':'rgba(255,255,255,0.35)'} strokeWidth={a?2.2:1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> },
@@ -148,9 +148,9 @@ export default function FloatingActions() {
             }
           }
           const cp = data.actions.find((a: any) => a.type === 'copy_message')
-          setOverlay({ userText: text, aiText: data.reply || 'Done.', copyText: cp?.text })
+          setOverlay({ userText: text, aiText: data.reply || 'Done.', copyText: cp?.text, debug: data.debug })
         } else {
-          setOverlay({ userText: text, aiText: data.reply || '...' })
+          setOverlay({ userText: text, aiText: data.reply || '...', debug: data.debug })
         }
       } catch (err: any) {
         setOverlay({ userText: text, aiText: `❌ ${err.message || 'Connection error'}` })
@@ -187,13 +187,20 @@ export default function FloatingActions() {
                 </div>
               : <p className="text-[13px] text-white leading-relaxed">{overlay.aiText}</p>
             }
+            {!overlay.loading && overlay.debug && overlay.debug.some(d => d?.toLowerCase().includes('error')) && (
+              <div className="mt-2 rounded-[10px] p-2" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                {overlay.debug.filter(d => d?.toLowerCase().includes('error')).map((d, i) => (
+                  <p key={i} className="text-[10px] break-all" style={{ color: 'rgba(255,100,80,0.8)' }}>{d}</p>
+                ))}
+              </div>
+            )}
             {!overlay.loading && (
               <div className="flex items-center gap-3 mt-3">
                 <button onClick={() => setOverlay(null)} className="text-[11px] underline" style={{ color: 'rgba(255,255,255,0.3)' }}>Dismiss</button>
                 {overlay.copyText && (
                   <button onClick={() => navigator.clipboard.writeText(overlay.copyText!)}
                     className="spring text-[11px] px-3 py-1 rounded-full"
-                    style={{ background: 'rgba(193,18,31,0.15)', color: '#E10600', border: '1px solid rgba(193,18,31,0.3)' }}>
+                    style={{ background: 'rgba(255,34,0,0.15)', color: '#FF2200', border: '1px solid rgba(255,34,0,0.3)' }}>
                     Copy message
                   </button>
                 )}

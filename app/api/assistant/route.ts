@@ -250,9 +250,10 @@ After using a tool, confirm what you did in 1-2 sentences.`
     })
 
     const reply = (finalResponse.content.find((b: any) => b.type === 'text') as any)?.text ?? 'Done.'
-    return NextResponse.json({ reply, actions: clientActions })
+    return NextResponse.json({ reply, actions: clientActions, debug: toolResults.map(r => r.content) })
   } catch (err: any) {
     console.error('Assistant error:', err)
-    return NextResponse.json({ reply: 'Sorry, something went wrong.' }, { status: 500 })
+    const msg = err?.message || String(err)
+    return NextResponse.json({ reply: `Error: ${msg}`, debug: msg }, { status: 500 })
   }
 }
