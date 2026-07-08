@@ -131,6 +131,10 @@ const tools: Anthropic.Tool[] = [
 
 export async function POST(request: Request) {
   try {
+    if (!process.env.ANTHROPIC_API_KEY) return NextResponse.json({ reply: '❌ ANTHROPIC_API_KEY not set in Vercel env vars', debug: ['ANTHROPIC_API_KEY missing'] }, { status: 500 })
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return NextResponse.json({ reply: '❌ NEXT_PUBLIC_SUPABASE_URL not set', debug: ['SUPABASE_URL missing'] }, { status: 500 })
+    if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) return NextResponse.json({ reply: '❌ NEXT_PUBLIC_SUPABASE_ANON_KEY not set', debug: ['SUPABASE_ANON_KEY missing'] }, { status: 500 })
+
     const { message } = await request.json()
     const today = new Date().toISOString().split('T')[0]
 
