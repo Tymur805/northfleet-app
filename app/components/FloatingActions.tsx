@@ -103,19 +103,43 @@ export default function FloatingActions() {
   function handleMic() {
     if (listening) { recognitionRef.current?.stop(); return }
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-    if (!SR) { setOverlay({ aiText: 'Voice not supported. Try Chrome.' }); return }
+    if (!SR) { setOverlay({ aiText: '❌ Voice not supported. Use Chrome or Safari.' }); return }
     const r = new SR()
     recognitionRef.current = r
-    r.continuous = false; r.interimResults = false; r.lang = 'uk-UA'
+    r.continuous = false; r.interimResults = false; r.lang = ''
+    let gotResult = false
     r.onstart = () => { setListening(true); setOverlay(null) }
-    r.onend = () => setListening(false)
-    r.onerror = () => setListening(false)
+    r.onerror = (e: any) => {
+      gotResult = true
+      setListening(false)
+      const msgs: Record<string,string> = {
+        'no-speech':    '🔇 No speech detected. Try speaking louder.',
+        'not-allowed':  '🚫 Mic blocked. Allow microphone in browser settings.',
+        'audio-capture':'🎤 Microphone not found.',
+        'network':      '🌐 Network error during recognition.',
+      }
+      setOverlay({ aiText: msgs[e.error] || `❌ Mic error: ${e.error}` })
+    }
+    r.onend = () => {
+      setListening(false)
+      if (!gotResult) setOverlay({ aiText: '🔇 Nothing heard. Tap mic and speak.' })
+    }
     r.onresult = async (e: any) => {
+      gotResult = true
       const text = e.results[0][0].transcript
       setOverlay({ userText: text, loading: true })
       try {
         const res = await fetch('/api/assistant', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: text }) })
-        const data = await res.json()
+        const raw = await res.text()
+        if (!res.ok) {
+          setOverlay({ userText: text, aiText: `❌ Server error ${res.status}: ${raw.slice(0, 120)}` })
+          return
+        }
+        const data = JSON.parse(raw)
+        if (data.error) {
+          setOverlay({ userText: text, aiText: `❌ ${data.error}` })
+          return
+        }
         if (data.actions?.length) {
           for (const a of data.actions) {
             if (a.type === 'navigate') setTimeout(() => router.push(a.path), 900)
@@ -128,7 +152,9 @@ export default function FloatingActions() {
         } else {
           setOverlay({ userText: text, aiText: data.reply || '...' })
         }
-      } catch { setOverlay({ userText: text, aiText: 'Connection error.' }) }
+      } catch (err: any) {
+        setOverlay({ userText: text, aiText: `❌ ${err.message || 'Connection error'}` })
+      }
     }
     r.start(); setPlusOpen(false)
   }
