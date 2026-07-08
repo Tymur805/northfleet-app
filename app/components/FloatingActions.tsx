@@ -187,10 +187,10 @@ export default function FloatingActions() {
                 </div>
               : <p className="text-[13px] text-white leading-relaxed">{overlay.aiText}</p>
             }
-            {!overlay.loading && overlay.debug && overlay.debug.some(d => d?.toLowerCase().includes('error')) && (
+            {!overlay.loading && overlay.debug && overlay.debug.length > 0 && (
               <div className="mt-2 rounded-[10px] p-2" style={{ background: 'rgba(255,255,255,0.04)' }}>
-                {overlay.debug.filter(d => d?.toLowerCase().includes('error')).map((d, i) => (
-                  <p key={i} className="text-[10px] break-all" style={{ color: 'rgba(255,100,80,0.8)' }}>{d}</p>
+                {overlay.debug.map((d, i) => (
+                  <p key={i} className="text-[10px] break-all" style={{ color: overlay.debug!.some(x => x?.toLowerCase().includes('error')) ? 'rgba(255,100,80,0.8)' : 'rgba(255,255,255,0.3)' }}>{d}</p>
                 ))}
               </div>
             )}

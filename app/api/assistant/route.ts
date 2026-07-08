@@ -158,7 +158,7 @@ After using a tool, confirm what you did in 1-2 sentences.`
     // If no tool use — return text directly
     if (firstResponse.stop_reason !== 'tool_use') {
       const text = (firstResponse.content.find((b: any) => b.type === 'text') as any)?.text ?? ''
-      return NextResponse.json({ reply: text })
+      return NextResponse.json({ reply: text, debug: [`No tools called. stop_reason=${firstResponse.stop_reason}. Reply: ${text}`] })
     }
 
     // Process tool calls
@@ -254,6 +254,6 @@ After using a tool, confirm what you did in 1-2 sentences.`
   } catch (err: any) {
     console.error('Assistant error:', err)
     const msg = err?.message || String(err)
-    return NextResponse.json({ reply: `Error: ${msg}`, debug: msg }, { status: 500 })
+    return NextResponse.json({ reply: `Error: ${msg}`, debug: [msg] }, { status: 500 })
   }
 }
